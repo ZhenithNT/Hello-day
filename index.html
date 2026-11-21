@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chào ngày mới</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="theme-color" content="#17697A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1B2A41;--sun:#FFC857;--lagoon:#17697A;--paper:#FFFFFF;
+  --r:14px;
+  --ui:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --hand:"Caveat","Segoe Script",cursive;
+}
+[data-theme=dawn]{--bg1:#FFDCCB;--bg2:#CFE3F7;--fg:#1B2A41;--muted:#52607A;--panel:rgba(255,255,255,.62);--line:rgba(27,42,65,.16);--btn:#17697A;--btnfg:#fff;--tile:rgba(27,42,65,.10)}
+[data-theme=day]{--bg1:#BFE0F7;--bg2:#EAF5FD;--fg:#12263F;--muted:#4A5C75;--panel:rgba(255,255,255,.66);--line:rgba(18,38,63,.16);--btn:#17697A;--btnfg:#fff;--tile:rgba(18,38,63,.10)}
+[data-theme=dusk]{--bg1:#FBD0A8;--bg2:#C9B6F0;--fg:#2A1F4D;--muted:#53456F;--panel:rgba(255,255,255,.55);--line:rgba(42,31,77,.18);--btn:#2A1F4D;--btnfg:#fff;--tile:rgba(42,31,77,.12)}
+[data-theme=night]{--bg1:#0F1B33;--bg2:#26345C;--fg:#EAF0FF;--muted:#A9B7D6;--panel:rgba(255,255,255,.08);--line:rgba(234,240,255,.20);--btn:#FFC857;--btnfg:#1B2A41;--tile:rgba(234,240,255,.14)}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg2)}
+body{margin:0;min-height:100vh;font-family:var(--ui);font-size:16px;line-height:1.5;color:var(--fg);background:linear-gradient(180deg,var(--bg1),var(--bg2) 70%) fixed;padding:max(24px,env(safe-area-inset-top)) 20px 56px}
+.wrap{max-width:480px;margin:0 auto}
+h1{font-family:var(--serif);font-weight:600;font-size:34px;line-height:1.15;margin:8px 0 4px;letter-spacing:-.01em}
+.date{color:var(--muted);font-size:14px}
+.streak{color:var(--muted);font-size:14px;margin:2px 0 28px}
+
+button{font:inherit;cursor:pointer;border:0;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.btn{display:block;width:100%;min-height:48px;padding:12px 20px;border-radius:var(--r);background:var(--btn);color:var(--btnfg);font-weight:600;font-size:16px}
+.btn:active{transform:scale(.985)}
+.btn:disabled{opacity:.55;cursor:default}
+
+/* segmented control */
+.seg{display:flex;gap:4px;padding:4px;border-radius:999px;background:var(--panel);margin-bottom:16px;border:1px solid var(--line)}
+.seg button{flex:1;min-height:40px;padding:6px 8px;border-radius:999px;background:transparent;font-size:14px;font-weight:500;color:var(--fg)}
+.seg button[aria-pressed=true]{background:var(--btn);color:var(--btnfg);font-weight:600}
+
+/* letter */
+.letter{position:relative;background:var(--paper);color:var(--ink);border-radius:6px;padding:34px 24px 24px;box-shadow:0 12px 30px -12px rgba(10,20,40,.35)}
+.letter::before{content:"";position:absolute;left:0;right:0;top:0;height:8px;border-radius:6px 6px 0 0;background:repeating-linear-gradient(135deg,var(--lagoon) 0 14px,#fff 14px 22px,var(--sun) 22px 36px,#fff 36px 44px)}
+.from{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.av{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:17px;color:#fff}
+.from b{display:block;font-size:16px;line-height:1.25}
+.from small{color:#5B6980;font-size:14px}
+.msg{font-family:var(--serif);font-size:23px;line-height:1.5;margin:0;min-height:140px;max-width:34ch}
+.sign{font-family:var(--hand);font-size:30px;color:var(--lagoon);margin-top:14px;line-height:1}
+.letter.in{animation:unfold .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes unfold{from{opacity:0;transform:translateY(10px) rotate(-.6deg)}to{opacity:1;transform:none}}
+.next{margin-top:16px}
+
+section{margin-top:44px}
+h2{font-family:var(--serif);font-weight:600;font-size:22px;margin:0 0 4px;letter-spacing:-.005em}
+.hint{color:var(--muted);font-size:14px;margin:0 0 14px}
+
+/* mood */
+.moods{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.moods button{aspect-ratio:1;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);font-size:28px}
+.moods button[aria-pressed=true]{background:var(--btn);border-color:transparent}
+.reply{margin:14px 0 0;min-height:48px}
+
+/* tasks */
+.tasks{border-top:1px solid var(--line)}
+.task{display:flex;align-items:center;gap:14px;min-height:56px;padding:8px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.task input{appearance:none;flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--muted);display:grid;place-items:center;margin:0;cursor:pointer;background:transparent}
+.task input:checked{background:var(--btn);border-color:var(--btn)}
+.task input:checked::after{content:"";width:6px;height:11px;border:solid var(--btnfg);border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.task span{font-size:16px}
+.task input:checked + span{text-decoration:line-through;color:var(--muted)}
+.link{background:none;color:var(--fg);text-decoration:underline;text-underline-offset:4px;font-size:15px;padding:12px 0;min-height:44px}
+
+/* games */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.hud{display:flex;justify-content:space-between;font-weight:600;margin:4px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tile{aspect-ratio:1;border-radius:12px;background:var(--tile);transition:background .12s,transform .12s;min-height:48px}
+.tile.lit{background:var(--sun);transform:scale(1.05)}
+.tile.ok{background:#2BB673}
+.tile.bad{background:#E5484D}
+.info{min-height:24px;margin:12px 0 0;font-weight:500}
+.expr{font-family:var(--serif);font-size:38px;font-weight:600;text-align:center;margin:8px 0 14px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opts button{min-height:56px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);font-size:22px;font-weight:600}
+.opts button:active{background:var(--tile)}
+.start{margin-top:14px}
+
+.fx{position:fixed;pointer-events:none;font-size:26px;animation:up 1s forwards;z-index:9}
+@keyframes up{to{transform:translateY(-120px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.letter.in,.fx{animation:none}.tile{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1 id="hello">Chào buổi sáng</h1>
+    <div class="date" id="date"></div>
+    <div class="streak" id="streak"></div>
+  </header>
+
+  <main>
+    <div class="seg" id="cats" role="group" aria-label="Loại lời nhắn"></div>
+
+    <article class="letter in" id="letter" aria-live="polite">
+      <div class="from">
+        <div class="av" id="av" aria-hidden="true"></div>
+        <div><b id="name"></b><small id="meta"></small></div>
+      </div>
+      <p class="msg" id="msg"></p>
+      <div class="sign" id="sign"></div>
+    </article>
+    <button class="btn next" id="more">Đọc thư của người khác</button>
+
+    <section>
+      <h2>Hôm nay bạn thấy thế nào?</h2>
+      <p class="hint">Chọn một biểu tượng, mình sẽ đáp lại bạn.</p>
+      <div class="moods" id="moods" role="group" aria-label="Tâm trạng"></div>
+      <p class="reply" id="moodReply"></p>
+    </section>
+
+    <section>
+      <h2>Ba việc nhỏ cho hôm nay</h2>
+      <p class="hint">Làm xong cả ba là bạn đã thắng ngày hôm nay.</p>
+      <div class="tasks" id="tasks"></div>
+      <button class="link" id="newTasks">Đổi việc khác</button>
+    </section>
+
+    <section>
+      <h2>Khởi động não</h2>
+      <p class="hint">Chọn một trò chơi ngắn trước khi bắt đầu ngày mới.</p>
+      <div class="seg" id="gtabs" role="group" aria-label="Trò chơi"></div>
+
+      <div class="panel" id="g1">
+        <div class="hud"><span>Màn <span id="lvl">0</span></span><span>Kỷ lục <span id="best">0</span></span></div>
+        <div class="grid" id="grid"></div>
+        <p class="info" id="ginfo">Nhớ thứ tự các ô sáng, rồi bấm lại đúng thứ tự đó.</p>
+        <button class="btn start" id="startMem">Bắt đầu</button>
+      </div>
+
+      <div class="panel" id="g2" hidden>
+        <div class="hud"><span>Điểm <span id="score">0</span></span><span>Còn <span id="time">30</span> giây</span></div>
+        <div class="expr" id="expr">Sẵn sàng?</div>
+        <div class="opts" id="opts"></div>
+        <button class="btn start" id="startMath">Bắt đầu</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const safe=f=>{try{return f()}catch(e){return null}};
+const store={get(k,d){const v=safe(()=>JSON.parse(localStorage.getItem(k)));return v==null?d:v},set(k,v){safe(()=>localStorage.setItem(k,JSON.stringify(v)))}};
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+
+// ===== nền trời theo giờ =====
+const h=new Date().getHours();
+document.documentElement.dataset.theme=h>=5&&h<9?'dawn':h>=9&&h<16?'day':h>=16&&h<19?'dusk':'night';
+$('hello').textContent=h<11?'Chào buổi sáng':h<14?'Chào buổi trưa':h<18?'Chào buổi chiều':'Chào buổi tối';
+$('date').textContent=new Date().toLocaleDateString('vi-VN',{weekday:'long',day:'numeric',month:'long'});
+
+safe(()=>{
+  const today=new Date().toDateString();
+  let d=store.get('morning',{n:0,last:''});
+  if(d.last!==today){
+    const y=new Date();y.setDate(y.getDate()-1);
+    d.n=d.last===y.toDateString()?d.n+1:1;d.last=today;store.set('morning',d);
+  }
+  $('streak').textContent=d.n>1?`Bạn đã ghé ${d.n} ngày liên tiếp`:'Chào mừng bạn đến với ngày đầu tiên';
+});
+
+// ===== người gửi =====
+const NAM=["James","Daniel","Ethan","Lucas","Noah","Ryan","Leo","Oliver","Jack","Henry","Adam","Kevin","Tom","Max","Alex","Sam","Ben","Chris","David","Eric","Felix","George","Harry","Ian","Jacob","Liam","Mason","Nathan","Owen","Peter","Quinn","Robert","Simon","Theo","Victor","William","Aaron","Caleb","Dylan","Evan","Finn","Gavin","Isaac","Jason","Kyle","Logan","Marcus","Nick","Oscar","Paul"];
+const NU=["Emma","Lily","Sophie","Grace","Anna","Mia","Chloe","Ella","Amy","Olivia","Nora","Ruby","Kate","Zoe","Hannah","Julia","Alice","Bella","Clara","Diana","Eva","Fiona","Hazel","Iris","Jane","Karen","Laura","Maya","Nina","Paige","Rose","Sara","Tina","Uma","Vera","Wendy","Amber","Becca","Cora","Daisy","Elise","Faye","Gemma","Holly","Ivy","Jade","Lucy","Megan","Naomi","Piper"];
+const HO=["Smith","Brown","Taylor","Wilson","Davis","Clark","Lewis","Walker","Hall","Young","Allen","King","Wright","Scott","Green","Baker","Adams","Nelson","Hill","Moore","Evans","Turner","Parker","Collins","Edwards","Stewart","Morris","Rogers","Cook","Bell"];
+function address(g,age){
+  if(age<30)return{me:"mình",you:"bạn"};
+  if(age<50)return{me:g==='nam'?"anh":"chị",you:"em"};
+  return{me:g==='nam'?"chú":"cô",you:"cháu"};
+}
+const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
+
+// ===== kho lời nhắn =====
+const CHEER=[
+ (m,y)=>`${cap(y)} ơi, dậy thôi! ${cap(m)} không biết hôm nay ${y} gặp chuyện gì, nhưng ${m} tin ${y} xử lý được hết. 🔥`,
+ (m,y)=>`Gửi ${y}, người ${m} chưa từng gặp: ${y} đã cố gắng nhiều hơn ${y} tưởng đấy. Hôm nay cứ bước tiếp nhé. 💪`,
+ (m,y)=>`${cap(m)} từng có những ngày chẳng muốn dậy, vậy mà giờ vẫn ổn. ${cap(y)} cũng sẽ ổn thôi, ${m} cá luôn.`,
+ (m,y)=>`Không cần ai công nhận ${y} mới giỏi đâu. ${cap(y)} giỏi sẵn rồi, ${m} nói thật.`,
+ (m,y)=>`Mệt thì cứ nghỉ một chút rồi đi tiếp. ${cap(m)} đứng đây cổ vũ ${y}. 📣`,
+ (m,y)=>`Tin ai thì cứ chọn lọc, nhưng tin chính ${y} thì tin hết mình nhé. ${cap(m)} đảm bảo ${y} đáng tin lắm. 😎`,
+ (m,y)=>`Một ly nước, một hơi thở sâu, một nụ cười. Xong, vậy là ${y} đã mở đầu ngày mới thật đẹp rồi. ☀️`,
+ (m,y)=>`${cap(y)} không cần hoàn hảo để xứng đáng được yêu thương. ${cap(m)} nghĩ vậy thật lòng.`,
+ (m,y)=>`Ngã thì bật dậy, buồn thì khóc xong rồi cười. Ngày mới của ${y} đang chờ kìa, đi thôi! 🚀`,
+ (m,y)=>`Hôm nay ${y} chỉ cần làm một việc nhỏ cho bản thân thôi là ${m} vỗ tay rồi đó. 👏`,
+ (m,y)=>`Có những người thật sự quý ${y}, dù ${y} chưa thấy hết. Và ${m} cũng đang nghĩ tốt về ${y} đây. 🤗`,
+ (m,y)=>`Chuyện hôm qua chưa ổn không có nghĩa là hôm nay cũng thế. Trang mới, ${y} cầm bút. ✍️`,
+ (m,y)=>`${cap(y)} đã vượt qua 100% những ngày tệ nhất của mình. Hôm nay cũng vậy thôi. 🏆`,
+ (m,y)=>`Đừng so sánh chương một của ${y} với chương mười của người khác. ${cap(y)} đang đi đúng nhịp của mình.`,
+ (m,y)=>`Pin xuống thì sạc, ${y} không hỏng đâu. Nạp lại năng lượng rồi mình chạy tiếp nhé. 🔋`,
+ (m,y)=>`${cap(m)} không cần biết ${y} là ai, ${m} chỉ biết ${y} xứng đáng có một ngày thật tốt. 🌟`,
+ (m,y)=>`Nếu hôm nay khó, hãy chia nhỏ nó ra. Chỉ cần xong việc đầu tiên, phần còn lại sẽ dễ hơn nhiều.`,
+ (m,y)=>`${cap(y)} mạnh mẽ hơn mọi chuyện từng làm ${y} gục ngã. Đứng dậy, vươn vai, rồi bước ra thôi! 🦁`,
+ (m,y)=>`Mỗi sáng là một cơ hội làm lại. ${cap(m)} mong ${y} chộp lấy nó thật hào hứng. ⚡`,
+ (m,y)=>`Dù chỉ một bước nhỏ, ${y} vẫn đang tiến lên. ${cap(m)} thấy hết đấy. 👣`,
+ (m,y)=>`Không sao nếu hôm nay ${y} chưa làm được hết. Làm được một chút cũng đáng khen rồi.`,
+ (m,y)=>`${cap(y)} là đội trưởng của cuộc đời ${y}. Hôm nay cứ chọn hướng đi mà ${y} thấy đúng. 🚩`,
+ (m,y)=>`Khó khăn chỉ là đoạn đường dốc, đi lên sẽ có cảnh đẹp. ${cap(m)} tin ${y} lên tới nơi. ⛰️`,
+ (m,y)=>`Hãy nói với bản thân một câu thật dịu dàng trước khi ra khỏi nhà: “Mình đang làm tốt lắm rồi.”`
+];
+const WISH=[
+ (m,y)=>`Chúc ${y} một ngày thật nhiều năng lượng, nhiều nụ cười và ít muộn phiền. 🌞`,
+ (m,y)=>`Chúc ${y} hôm nay gặp toàn người tốt và những chuyện vui bất ngờ. 🍀`,
+ (m,y)=>`Chúc ${y} có một bữa sáng ngon, một buổi trưa nhẹ nhàng và một buổi tối bình yên. 🍜`,
+ (m,y)=>`Chúc mọi việc ${y} làm hôm nay đều thuận lợi, từ chuyện nhỏ đến chuyện lớn. ✨`,
+ (m,y)=>`Chúc ${y} luôn giữ được trái tim ấm áp và đủ tỉnh táo để biết ai xứng đáng được tin. 💛`,
+ (m,y)=>`Chúc ${y} ngủ ngon tối nay, và thức dậy ngày mai với thật nhiều hy vọng. 🌙`,
+ (m,y)=>`Chúc ${y} luôn bình an, khỏe mạnh và có người ở bên khi ${y} cần. 🤝`,
+ (m,y)=>`Chúc ${y} sớm tìm lại niềm vui trong những điều giản dị: ly trà, bản nhạc hay, cái nắng đầu ngày. ☕`,
+ (m,y)=>`Chúc ${y} mạnh mẽ trước chuyện khó, dịu dàng với chính mình. 🌸`,
+ (m,y)=>`Chúc ${y} tuần này có ít nhất ba lần cười thật to. 😄`,
+ (m,y)=>`Chúc ${y} đủ can đảm để theo đuổi điều ${y} muốn, và đủ kiên nhẫn để chờ nó đến. 🌱`,
+ (m,y)=>`Chúc ${y} hôm nay nhận được một tin nhắn làm ${y} thấy ấm lòng. 💌`,
+ (m,y)=>`Chúc ${y} bớt lo, bớt nghĩ, và nhiều lúc thảnh thơi hơn nữa. 🍃`,
+ (m,y)=>`Chúc ${y} mọi điều ${y} đang mong đều đang trên đường đến với ${y}. 🌈`,
+ (m,y)=>`Chúc ${y} yêu bản thân nhiều hơn mỗi ngày, dù chỉ một chút thôi. 💖`,
+ (m,y)=>`Chúc ${y} có thật nhiều sức khỏe và thật nhiều những buổi sáng như hôm nay. 🌅`,
+ (m,y)=>`Chúc ${y} một ngày mới rực rỡ như ánh nắng đầu tiên. ☀️`,
+ (m,y)=>`Chúc ${y} gặp được người hiểu ${y}, không cần giải thích quá nhiều. 🫶`
+];
+const TALK=[
+ (m,y)=>`${cap(m)} cũng từng khó tin người, nên ${m} hiểu. Không sao cả, cứ từ từ, tin ai thì để thời gian trả lời.`,
+ (m,y)=>`Có lúc ${m} thấy mình bị người khác tác động quá nhiều. Về sau ${m} học cách dừng một nhịp trước khi phản ứng, và thấy nhẹ hơn hẳn.`,
+ (m,y)=>`${cap(m)} từng nghĩ phải mạnh mẽ một mình. Hóa ra nói ra với một người đáng tin đã giúp ${m} đỡ nặng lòng rất nhiều.`,
+ (m,y)=>`Hôm nào ${m} thấy mất tinh thần, ${m} viết ra ba việc mình đã làm được. Nhỏ thôi cũng được. ${cap(y)} thử xem nhé?`,
+ (m,y)=>`Buồn không có nghĩa là yếu. ${cap(m)} cũng buồn, cũng mệt, và ${m} vẫn đang đi tiếp mỗi ngày.`,
+ (m,y)=>`Nếu lời ai đó làm ${y} tổn thương, hãy nhớ đó là cách họ nhìn, chưa chắc là giá trị của ${y}.`,
+ (m,y)=>`${cap(m)} học được rằng không phải ai cũng cần biết hết chuyện của mình. Giữ một vòng tròn nhỏ mà chắc là đủ rồi.`,
+ (m,y)=>`Có những buổi sáng ${m} chỉ làm được đúng một việc: ra khỏi giường. Và ${m} vẫn tự khen mình vì điều đó.`,
+ (m,y)=>`Cô đơn đôi khi là dấu hiệu ${y} cần được quan tâm hơn, và ${y} xứng đáng có điều đó.`,
+ (m,y)=>`${cap(m)} từng thất vọng về vài người thân thiết. Sau đó ${m} nhận ra vẫn còn những người đáng quý, chỉ cần ${m} mở lòng đúng chỗ.`,
+ (m,y)=>`Đi dạo mười phút, nghe một bài nhạc mình thích, ${m} thấy tâm trạng tốt lên rõ rệt. ${cap(y)} thử hôm nay nhé. 🎧`,
+ (m,y)=>`Không ai sống một cuộc đời không có ngày xấu. ${cap(y)} không lẻ loi như ${y} nghĩ đâu.`,
+ (m,y)=>`${cap(m)} tập thở sâu mỗi sáng, bốn giây vào, sáu giây ra. Nhìn thì nhỏ, nhưng làm ${m} bình tĩnh hơn hẳn.`,
+ (m,y)=>`Nếu ${y} thấy kiệt sức kéo dài, nói chuyện với một người ${y} tin hoặc một chuyên gia là việc rất đáng làm.`
+];
+const OLD=[
+ (m,y)=>`Tuổi này ${m} học được một điều: những ngày tệ nhất rồi cũng qua, và ${y} đã vượt qua nhiều hơn ${y} nghĩ. Đừng bỏ cuộc nhé. 🌿`,
+ (m,y)=>`${cap(m)} đi qua nhiều chuyện rồi, nên ${m} nói được: ${y} mạnh mẽ hơn ${y} tưởng. Ăn sáng đầy đủ rồi đi đón ngày mới nhé. 🍚`,
+ (m,y)=>`Thời gian dạy ${m} rằng điều quan trọng nhất là sức khỏe và những người thật lòng. ${cap(y)} nhớ chăm sóc cả hai nhé.`,
+ (m,y)=>`${cap(m)} từng lo lắng rất nhiều về những chuyện mà sau này chẳng còn quan trọng. ${cap(y)} cũng đừng lo quá nhé.`,
+ (m,y)=>`Đường còn dài, ${y} còn nhiều thời gian để thử và để sai. ${cap(m)} nói thật đấy.`,
+ (m,y)=>`Có những điều phải đến lúc nhìn lại ${m} mới hiểu. Còn ${y} chỉ cần biết là mình đang làm tốt hơn ${y} nghĩ. 🌅`
+];
+const YOUNG=[
+ (m,y)=>`Ê ${y} ơi, ${m} cũng đang loay hoay lắm nhưng vẫn cố mỗi ngày. Mình cùng cố lên nhé! 🔥`,
+ (m,y)=>`${cap(m)} tin là hôm nay ${y} sẽ làm được điều gì đó khiến ${y} bất ngờ. Đi thôi, ${m} đi cùng! 🚀`,
+ (m,y)=>`Tụi mình còn trẻ mà, sai thì sửa, ngã thì đứng dậy. ${cap(y)} đừng áp lực quá nha!`,
+ (m,y)=>`${cap(m)} vừa pha cà phê xong và nghĩ ngay đến ${y}. Chúc ${y} một ngày xịn xò! ☕`,
+ (m,y)=>`Cứ là chính ${y} thôi, ${m} thấy vậy là ngầu lắm rồi. 😎`,
+ (m,y)=>`Có ngày ${m} cũng chán nản lắm, rồi ${m} nhắn cho một đứa bạn thân và thấy khá hơn liền. ${cap(y)} thử xem. 💬`
+];
+const POOL={cheer:CHEER,wish:WISH,talk:TALK};
+let cat=store.get('cat','all');
+const CATS=[["all","Tất cả"],["cheer","Cổ vũ"],["wish","Lời chúc"],["talk","Tâm sự"]];
+function drawCats(){
+  $('cats').innerHTML=CATS.map(([k,t])=>`<button data-c="${k}" aria-pressed="${cat===k}">${t}</button>`).join('');
+}
+$('cats').onclick=e=>{const b=e.target.closest('[data-c]');if(!b)return;cat=b.dataset.c;store.set('cat',cat);drawCats();newPerson()};
+drawCats();
+
+let lastMsg='';
+function hue(s){let x=0;for(const c of s)x=(x*31+c.charCodeAt(0))%360;return x}
+function newPerson(){
+  const g=Math.random()<.5?'nam':'nu';
+  const age=18+Math.floor(Math.random()*53);
+  const first=g==='nam'?pick(NAM):pick(NU), last=pick(HO), name=first+' '+last;
+  const {me,you}=address(g,age);
+  let pool=cat==='all'?[...CHEER,...WISH,...TALK]:[...POOL[cat]];
+  if(age>=45)pool.push(...OLD.filter(()=>cat!=='wish'),...OLD.filter(()=>cat!=='wish'));
+  if(age<30&&cat!=='wish')pool.push(...YOUNG,...YOUNG);
+  let text;do{text=pick(pool)(me,you)}while(text===lastMsg);
+  lastMsg=text;
+  $('av').textContent=first[0]+last[0];
+  $('av').style.background=`hsl(${hue(name)} 45% 38%)`;
+  $('name').textContent=name;
+  $('meta').textContent=`${g==='nam'?'Nam':'Nữ'}, ${age} tuổi`;
+  $('msg').textContent=text;
+  $('sign').textContent=first;
+  const l=$('letter');l.classList.remove('in');void l.offsetWidth;l.classList.add('in');
+}
+$('more').onclick=newPerson;
+newPerson();
+
+// ===== tâm trạng =====
+const moods=[["😞","Nghe có vẻ nặng nề nhỉ. Không sao cả, cứ thấy thế nào thì cho phép mình thấy như vậy. Hôm nay mình làm nhẹ nhàng thôi."],
+["😕","Chưa ổn lắm. Thử uống một ly nước, mở cửa sổ, hít thở sâu ba lần rồi mình tính tiếp nhé."],
+["😐","Bình thường cũng là một kiểu ổn. Làm một điều nhỏ cho vui để đẩy ngày lên một chút nào."],
+["🙂","Ngon rồi! Giữ nhịp này, nhớ khen bản thân một câu."],
+["🤩","Tuyệt vời! Năng lượng này đáng được chia sẻ, bạn nhắn cho một người bạn quý nhé."]];
+$('moods').innerHTML=moods.map((m,i)=>`<button data-i="${i}" aria-pressed="false" aria-label="Tâm trạng ${i+1} trên 5">${m[0]}</button>`).join('');
+$('moods').onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#moods button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  $('moodReply').textContent=moods[b.dataset.i][1];
+};
+
+// ===== việc nhỏ =====
+const pool=["Uống một ly nước","Mở cửa sổ đón nắng","Hít thở sâu năm lần","Đi bộ mười phút","Nghe một bài hát mình thích","Nhắn tin hỏi thăm một người mình quý","Dọn gọn mặt bàn","Viết ra một điều biết ơn","Vươn vai, duỗi người một phút","Ăn một món ngon","Gọi điện cho người thân","Khen bản thân một câu","Ra ngoài hít thở không khí","Pha một tách trà hoặc cà phê","Sắp xếp ba việc cần làm hôm nay"];
+function newTasks(){
+  const t=[...pool].sort(()=>Math.random()-.5).slice(0,3);
+  $('tasks').innerHTML=t.map(x=>`<label class="task"><input type="checkbox"><span>${x}</span></label>`).join('');
+}
+newTasks();$('newTasks').onclick=newTasks;
+$('tasks').onchange=e=>{
+  if(e.target.checked)burst(innerWidth/2,innerHeight/2);
+  if([...document.querySelectorAll('#tasks input')].every(i=>i.checked)){
+    $('msg').textContent="Bạn đã xong cả ba việc rồi. Giỏi lắm, thật đấy! 🎉";
+    $('name').textContent="Chính bạn";$('meta').textContent="Người luôn ở bên bạn";$('sign').textContent="Bạn";
+    $('av').textContent="B";$('av').style.background="hsl(170 50% 32%)";
+  }
+};
+function burst(x,y){
+  for(let i=0;i<5;i++){
+    const s=document.createElement('div');s.className='fx';s.textContent=pick(['✨','🎉','💖','⭐']);
+    s.style.left=(x+Math.random()*80-40)+'px';s.style.top=y+'px';
+    document.body.appendChild(s);setTimeout(()=>s.remove(),1000);
+  }
+}
+
+// ===== tab trò chơi =====
+const GT=[["g1","Nhớ thứ tự"],["g2","Tính nhẩm"]];
+let curG='g1';
+function drawG(){
+  $('gtabs').innerHTML=GT.map(([k,t])=>`<button data-t="${k}" aria-pressed="${curG===k}">${t}</button>`).join('');
+  GT.forEach(([k])=>$(k).hidden=k!==curG);
+}
+$('gtabs').onclick=e=>{const b=e.target.closest('[data-t]');if(!b)return;curG=b.dataset.t;drawG()};
+drawG();
+
+// ===== trò 1: nhớ thứ tự =====
+let seq=[],pos=0,lvl=0,locked=true,best=store.get('memBest',0);
+$('best').textContent=best;
+$('grid').innerHTML=Array.from({length:9},(_,i)=>`<button class="tile" data-i="${i}" aria-label="Ô ${i+1}"></button>`).join('');
+const tiles=[...document.querySelectorAll('.tile')];
+async function playSeq(){
+  locked=true;$('ginfo').textContent='Nhìn kỹ nhé…';
+  await wait(600);
+  for(const i of seq){tiles[i].classList.add('lit');await wait(450);tiles[i].classList.remove('lit');await wait(200);}
+  pos=0;locked=false;$('ginfo').textContent='Đến lượt bạn.';
+}
+function nextLevel(){lvl++;$('lvl').textContent=lvl;seq.push(Math.floor(Math.random()*9));playSeq();}
+$('startMem').onclick=()=>{seq=[];lvl=0;$('startMem').disabled=true;nextLevel();};
+$('grid').onclick=async e=>{
+  const t=e.target.closest('.tile');if(!t||locked)return;
+  const i=+t.dataset.i;
+  if(i===seq[pos]){
+    t.classList.add('ok');setTimeout(()=>t.classList.remove('ok'),200);pos++;
+    if(pos===seq.length){
+      locked=true;burst(innerWidth/2,innerHeight/2);$('ginfo').textContent='Chuẩn rồi! Lên màn tiếp theo.';
+      await wait(900);nextLevel();
+    }
+  }else{
+    locked=true;t.classList.add('bad');setTimeout(()=>t.classList.remove('bad'),400);
+    const done=lvl-1;
+    if(done>best){best=done;store.set('memBest',best);$('best').textContent=best}
+    $('ginfo').textContent=`Dừng ở màn ${lvl}. Bạn nhớ được ${seq.length-1} bước. Chơi lại để phá kỷ lục nhé.`;
+    $('startMem').disabled=false;$('startMem').textContent='Chơi lại';
+  }
+};
+
+// ===== trò 2: tính nhẩm =====
+let sc=0,left=30,tm=null,ans=0;
+function question(){
+  const t=Math.floor(Math.random()*3);let a,b,c,e;
+  if(t===0){a=2+Math.floor(Math.random()*40);b=2+Math.floor(Math.random()*40);ans=a+b;e=`${a} + ${b}`}
+  else if(t===1){a=20+Math.floor(Math.random()*60);b=2+Math.floor(Math.random()*19);ans=a-b;e=`${a} − ${b}`}
+  else{a=2+Math.floor(Math.random()*9);b=2+Math.floor(Math.random()*9);c=1+Math.floor(Math.random()*20);ans=a*b+c;e=`${a} × ${b} + ${c}`}
+  $('expr').textContent=e;
+  const o=new Set([ans]);
+  while(o.size<4){const d=[-10,-3,-2,-1,1,2,3,10][Math.floor(Math.random()*8)];o.add(ans+d)}
+  $('opts').innerHTML=[...o].sort(()=>Math.random()-.5).map(v=>`<button data-v="${v}">${v}</button>`).join('');
+}
+function endMath(){
+  clearInterval(tm);tm=null;$('opts').innerHTML='';
+  $('expr').textContent=sc>=12?`${sc} điểm, quá đỉnh!`:`${sc} điểm`;
+  $('startMath').disabled=false;$('startMath').textContent='Chơi lại';
+}
+$('startMath').onclick=()=>{
+  sc=0;left=30;$('score').textContent=0;$('time').textContent=30;
+  $('startMath').disabled=true;$('startMath').textContent='Đang chơi';
+  question();
+  tm=setInterval(()=>{left--;$('time').textContent=left;if(left<=0)endMath()},1000);
+};
+$('opts').onclick=e=>{
+  const b=e.target.closest('button');if(!b||!tm)return;
+  if(+b.dataset.v===ans){sc++;$('score').textContent=sc}
+  else{left=Math.max(0,left-2);$('time').textContent=left;if(left<=0){endMath();return}}
+  question();
+};
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
