@@ -21,10 +21,20 @@ jobs:
         run: |
           mkdir www
           cp index.html manifest.webmanifest sw.js icon.svg www/
-      - name: Install Capacitor
+      - name: Install dependencies
         run: npm install
       - name: Add Android project
-        run: npx cap add android && npx cap sync android
+        run: npx cap add android
+      - name: Add notification permissions
+        run: |
+          MF=android/app/src/main/AndroidManifest.xml
+          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>\n    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>\n    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>\n    <uses-permission android:name="android.permission.VIBRATE"/>\n</manifest>#' "$MF"
+          cat "$MF"
+      - name: Generate app icon
+        continue-on-error: true
+        run: npx capacitor-assets generate --android
+      - name: Sync Capacitor
+        run: npx cap sync android
       - name: Build debug APK
         working-directory: android
         run: chmod +x gradlew && ./gradlew assembleDebug

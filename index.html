@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Chào ngày mới</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -21,52 +21,63 @@
   --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
   --hand:"Caveat","Segoe Script",cursive;
 }
-[data-theme=dawn]{--bg1:#FFDCCB;--bg2:#CFE3F7;--fg:#1B2A41;--muted:#52607A;--panel:rgba(255,255,255,.62);--line:rgba(27,42,65,.16);--btn:#17697A;--btnfg:#fff;--tile:rgba(27,42,65,.10)}
-[data-theme=day]{--bg1:#BFE0F7;--bg2:#EAF5FD;--fg:#12263F;--muted:#4A5C75;--panel:rgba(255,255,255,.66);--line:rgba(18,38,63,.16);--btn:#17697A;--btnfg:#fff;--tile:rgba(18,38,63,.10)}
-[data-theme=dusk]{--bg1:#FBD0A8;--bg2:#C9B6F0;--fg:#2A1F4D;--muted:#53456F;--panel:rgba(255,255,255,.55);--line:rgba(42,31,77,.18);--btn:#2A1F4D;--btnfg:#fff;--tile:rgba(42,31,77,.12)}
-[data-theme=night]{--bg1:#0F1B33;--bg2:#26345C;--fg:#EAF0FF;--muted:#A9B7D6;--panel:rgba(255,255,255,.08);--line:rgba(234,240,255,.20);--btn:#FFC857;--btnfg:#1B2A41;--tile:rgba(234,240,255,.14)}
+[data-theme=dawn]{--bg1:#FFDCCB;--bg2:#CFE3F7;--fg:#1B2A41;--muted:#52607A;--panel:rgba(255,255,255,.62);--line:rgba(27,42,65,.16);--btn:#17697A;--btnfg:#fff;--tile:rgba(27,42,65,.10);--nav:rgba(255,248,244,.94)}
+[data-theme=day]{--bg1:#BFE0F7;--bg2:#EAF5FD;--fg:#12263F;--muted:#4A5C75;--panel:rgba(255,255,255,.66);--line:rgba(18,38,63,.16);--btn:#17697A;--btnfg:#fff;--tile:rgba(18,38,63,.10);--nav:rgba(240,248,254,.95)}
+[data-theme=dusk]{--bg1:#FBD0A8;--bg2:#C9B6F0;--fg:#2A1F4D;--muted:#53456F;--panel:rgba(255,255,255,.55);--line:rgba(42,31,77,.18);--btn:#2A1F4D;--btnfg:#fff;--tile:rgba(42,31,77,.12);--nav:rgba(246,236,248,.95)}
+[data-theme=night]{--bg1:#0F1B33;--bg2:#26345C;--fg:#EAF0FF;--muted:#A9B7D6;--panel:rgba(255,255,255,.08);--line:rgba(234,240,255,.20);--btn:#FFC857;--btnfg:#1B2A41;--tile:rgba(234,240,255,.14);--nav:rgba(18,30,56,.96)}
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg2)}
-body{margin:0;min-height:100vh;font-family:var(--ui);font-size:16px;line-height:1.5;color:var(--fg);background:linear-gradient(180deg,var(--bg1),var(--bg2) 70%) fixed;padding:max(24px,env(safe-area-inset-top)) 20px 56px}
+body{margin:0;min-height:100vh;font-family:var(--ui);font-size:16px;line-height:1.5;color:var(--fg);background:linear-gradient(180deg,var(--bg1),var(--bg2) 70%) fixed;padding:max(24px,env(safe-area-inset-top)) 20px calc(104px + env(safe-area-inset-bottom))}
 .wrap{max-width:480px;margin:0 auto}
+[hidden]{display:none!important}
 h1{font-family:var(--serif);font-weight:600;font-size:34px;line-height:1.15;margin:8px 0 4px;letter-spacing:-.01em}
-.date{color:var(--muted);font-size:14px}
-.streak{color:var(--muted);font-size:14px;margin:2px 0 28px}
+h2{font-family:var(--serif);font-weight:600;font-size:22px;margin:0 0 4px;letter-spacing:-.005em}
+h3{font-size:16px;margin:0 0 4px;font-weight:600}
+.date,.hint,.muted{color:var(--muted);font-size:14px}
+.hint{margin:0 0 14px}
+.streak{color:var(--muted);font-size:14px;margin:2px 0 24px}
+.block{margin-top:40px}
 
 button{font:inherit;cursor:pointer;border:0;color:inherit}
 :focus-visible{outline:3px solid var(--sun);outline-offset:2px}
 .btn{display:block;width:100%;min-height:48px;padding:12px 20px;border-radius:var(--r);background:var(--btn);color:var(--btnfg);font-weight:600;font-size:16px}
 .btn:active{transform:scale(.985)}
 .btn:disabled{opacity:.55;cursor:default}
+.btn.ghost{background:var(--panel);color:var(--fg);border:1px solid var(--line)}
+.row{display:flex;gap:10px;margin-top:12px}
+.row .btn{flex:1}
+.link{background:none;color:var(--fg);text-decoration:underline;text-underline-offset:4px;font-size:15px;padding:12px 0;min-height:44px}
 
-/* segmented control */
 .seg{display:flex;gap:4px;padding:4px;border-radius:999px;background:var(--panel);margin-bottom:16px;border:1px solid var(--line)}
 .seg button{flex:1;min-height:40px;padding:6px 8px;border-radius:999px;background:transparent;font-size:14px;font-weight:500;color:var(--fg)}
 .seg button[aria-pressed=true]{background:var(--btn);color:var(--btnfg);font-weight:600}
 
 /* letter */
-.letter{position:relative;background:var(--paper);color:var(--ink);border-radius:6px;padding:34px 24px 24px;box-shadow:0 12px 30px -12px rgba(10,20,40,.35)}
+.letter{position:relative;background:var(--paper);color:var(--ink);border-radius:6px;padding:34px 24px 20px;box-shadow:0 12px 30px -12px rgba(10,20,40,.35)}
 .letter::before{content:"";position:absolute;left:0;right:0;top:0;height:8px;border-radius:6px 6px 0 0;background:repeating-linear-gradient(135deg,var(--lagoon) 0 14px,#fff 14px 22px,var(--sun) 22px 36px,#fff 36px 44px)}
 .from{display:flex;align-items:center;gap:12px;margin-bottom:18px}
 .av{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:17px;color:#fff}
 .from b{display:block;font-size:16px;line-height:1.25}
 .from small{color:#5B6980;font-size:14px}
 .msg{font-family:var(--serif);font-size:23px;line-height:1.5;margin:0;min-height:140px;max-width:34ch}
-.sign{font-family:var(--hand);font-size:30px;color:var(--lagoon);margin-top:14px;line-height:1}
+.foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+.sign{font-family:var(--hand);font-size:30px;color:var(--lagoon);line-height:1}
+.heart{display:flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:999px;background:#F1F5F9;color:var(--ink);font-size:14px;font-weight:600}
+.heart svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}
+.heart[aria-pressed=true]{background:#FFE3E6;color:#B4233A}
+.heart[aria-pressed=true] svg{fill:currentColor}
 .letter.in{animation:unfold .45s cubic-bezier(.2,.7,.2,1)}
 @keyframes unfold{from{opacity:0;transform:translateY(10px) rotate(-.6deg)}to{opacity:1;transform:none}}
-.next{margin-top:16px}
 
-section{margin-top:44px}
-h2{font-family:var(--serif);font-weight:600;font-size:22px;margin:0 0 4px;letter-spacing:-.005em}
-.hint{color:var(--muted);font-size:14px;margin:0 0 14px}
-
-/* mood */
+/* mood, water */
 .moods{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 .moods button{aspect-ratio:1;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);font-size:28px}
 .moods button[aria-pressed=true]{background:var(--btn);border-color:transparent}
 .reply{margin:14px 0 0;min-height:48px}
+.water{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.water button{aspect-ratio:3/4;border-radius:8px 8px 14px 14px;background:var(--panel);border:1.5px solid var(--line);padding:0}
+.water button[aria-pressed=true]{background:linear-gradient(180deg,transparent 15%,#4FB6E8 15%);border-color:#2B8FC4}
 
 /* tasks */
 .tasks{border-top:1px solid var(--line)}
@@ -74,11 +85,10 @@ h2{font-family:var(--serif);font-weight:600;font-size:22px;margin:0 0 4px;letter
 .task input{appearance:none;flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--muted);display:grid;place-items:center;margin:0;cursor:pointer;background:transparent}
 .task input:checked{background:var(--btn);border-color:var(--btn)}
 .task input:checked::after{content:"";width:6px;height:11px;border:solid var(--btnfg);border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
-.task span{font-size:16px}
 .task input:checked + span{text-decoration:line-through;color:var(--muted)}
-.link{background:none;color:var(--fg);text-decoration:underline;text-underline-offset:4px;font-size:15px;padding:12px 0;min-height:44px}
+.done-line{margin:10px 0 0;font-weight:600;min-height:24px}
 
-/* games */
+/* panels, games */
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px}
 .hud{display:flex;justify-content:space-between;font-weight:600;margin:4px 0 12px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
@@ -90,52 +100,124 @@ h2{font-family:var(--serif);font-weight:600;font-size:22px;margin:0 0 4px;letter
 .expr{font-family:var(--serif);font-size:38px;font-weight:600;text-align:center;margin:8px 0 14px}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .opts button{min-height:56px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);font-size:22px;font-weight:600}
-.opts button:active{background:var(--tile)}
 .start{margin-top:14px}
 
-.fx{position:fixed;pointer-events:none;font-size:26px;animation:up 1s forwards;z-index:9}
+/* breathing */
+.breath{display:flex;flex-direction:column;align-items:center;padding:8px 0 4px}
+.orbwrap{width:200px;height:200px;display:grid;place-items:center}
+.orb{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff8,transparent 60%),var(--sun);transform:scale(.55);transition:transform 4s ease-in-out;display:grid;place-items:center}
+.breathtxt{font-family:var(--serif);font-size:24px;font-weight:600;margin:6px 0 2px;min-height:34px}
+
+/* lists */
+.list{border-top:1px solid var(--line)}
+.item{padding:14px 0;border-bottom:1px solid var(--line)}
+.item .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:4px}
+.item .top b{font-size:15px}
+.item p{margin:0;font-family:var(--serif);font-size:18px;line-height:1.5}
+.item .del{background:none;color:var(--muted);text-decoration:underline;text-underline-offset:3px;font-size:14px;min-height:44px;padding:0 4px}
+.empty{padding:20px 0;color:var(--muted)}
+textarea,input[type=text],input[type=time]{width:100%;font:inherit;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:var(--r);padding:12px 14px;min-height:48px}
+textarea{resize:vertical;min-height:96px}
+.chart{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:150px;padding-top:6px}
+.chart .col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%}
+.chart .face{font-size:20px;line-height:1}
+.chart .bar{width:60%;border-radius:6px 6px 2px 2px;background:var(--btn);opacity:.85}
+.chart small{color:var(--muted);font-size:12px}
+
+/* settings */
+.set{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:60px;padding:10px 0;border-bottom:1px solid var(--line)}
+.set:first-of-type{border-top:1px solid var(--line)}
+.set div{flex:1}
+.switch{appearance:none;flex:none;width:52px;height:32px;border-radius:999px;background:var(--tile);position:relative;cursor:pointer;margin:0;transition:background .15s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .15s}
+.switch:checked{background:var(--btn)}
+.switch:checked::after{transform:translateX(20px)}
+.set input[type=time]{width:130px}
+.status{margin:12px 0 0;font-size:14px;color:var(--muted);min-height:22px}
+
+/* nav */
+.nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;background:var(--nav);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom));backdrop-filter:blur(10px);z-index:20}
+.nav .in{display:flex;width:100%;max-width:480px}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:56px;padding:6px 2px;background:none;font-size:12px;font-weight:500;color:var(--muted);border-radius:12px}
+.nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.nav button[aria-current=page]{color:var(--fg);font-weight:700}
+.nav button[aria-current=page] svg{stroke-width:2.4}
+
+.fx{position:fixed;pointer-events:none;font-size:26px;animation:up 1s forwards;z-index:30}
 @keyframes up{to{transform:translateY(-120px);opacity:0}}
-@media (prefers-reduced-motion:reduce){.letter.in,.fx{animation:none}.tile{transition:none}}
+@media (prefers-reduced-motion:reduce){.letter.in,.fx{animation:none}.tile,.orb,.switch,.switch::after{transition:none}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
+<div class="wrap"><main>
+
+  <!-- HÔM NAY -->
+  <section class="view" data-view="today">
     <h1 id="hello">Chào buổi sáng</h1>
     <div class="date" id="date"></div>
     <div class="streak" id="streak"></div>
-  </header>
 
-  <main>
     <div class="seg" id="cats" role="group" aria-label="Loại lời nhắn"></div>
-
     <article class="letter in" id="letter" aria-live="polite">
       <div class="from">
         <div class="av" id="av" aria-hidden="true"></div>
         <div><b id="name"></b><small id="meta"></small></div>
       </div>
       <p class="msg" id="msg"></p>
-      <div class="sign" id="sign"></div>
+      <div class="foot">
+        <div class="sign" id="sign"></div>
+        <button class="heart" id="heart" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.5 8 3.4 5 6.5 5c2 0 3.5 1.1 4.3 2.6h.4C12 6.1 13.500 5 15.500 5c3.100 0 5 3 3.800 6.300-1.800 4.600-7.300 9.200-7.300 9.200z"/></svg><span id="heartTxt">Lưu thư</span></button>
+      </div>
     </article>
-    <button class="btn next" id="more">Đọc thư của người khác</button>
+    <button class="btn" style="margin-top:16px" id="more">Đọc thư của người khác</button>
 
-    <section>
+    <div class="block">
       <h2>Hôm nay bạn thấy thế nào?</h2>
       <p class="hint">Chọn một biểu tượng, mình sẽ đáp lại bạn.</p>
       <div class="moods" id="moods" role="group" aria-label="Tâm trạng"></div>
       <p class="reply" id="moodReply"></p>
-    </section>
+    </div>
 
-    <section>
+    <div class="block">
+      <h2>Uống nước</h2>
+      <p class="hint" id="waterHint"></p>
+      <div class="water" id="water" role="group" aria-label="Số ly nước"></div>
+    </div>
+
+    <div class="block">
       <h2>Ba việc nhỏ cho hôm nay</h2>
       <p class="hint">Làm xong cả ba là bạn đã thắng ngày hôm nay.</p>
       <div class="tasks" id="tasks"></div>
+      <div class="done-line" id="taskDone"></div>
       <button class="link" id="newTasks">Đổi việc khác</button>
-    </section>
+    </div>
+  </section>
 
-    <section>
+  <!-- HỘP THƯ -->
+  <section class="view" data-view="inbox" hidden>
+    <h1>Hộp thư</h1>
+    <p class="hint">Những lá thư bạn đã nhận và đã lưu.</p>
+    <div class="seg" id="inboxTabs" role="group" aria-label="Danh sách thư"></div>
+    <div id="inboxBody"></div>
+  </section>
+
+  <!-- THƯ GIÃN -->
+  <section class="view" data-view="relax" hidden>
+    <h1>Thư giãn</h1>
+    <p class="hint">Thở chậm và khởi động não một chút.</p>
+
+    <h2>Hít thở</h2>
+    <p class="hint">Hít vào 4 giây, thở ra 6 giây. Làm vài vòng là thấy nhẹ hơn.</p>
+    <div class="panel breath">
+      <div class="orbwrap"><div class="orb" id="orb"></div></div>
+      <div class="breathtxt" id="breathTxt">Sẵn sàng?</div>
+      <div class="muted" id="breathCnt"></div>
+      <button class="btn start" id="breathBtn" style="width:100%">Bắt đầu</button>
+    </div>
+
+    <div class="block">
       <h2>Khởi động não</h2>
-      <p class="hint">Chọn một trò chơi ngắn trước khi bắt đầu ngày mới.</p>
+      <p class="hint">Chọn một trò chơi ngắn.</p>
       <div class="seg" id="gtabs" role="group" aria-label="Trò chơi"></div>
 
       <div class="panel" id="g1">
@@ -149,36 +231,97 @@ h2{font-family:var(--serif);font-weight:600;font-size:22px;margin:0 0 4px;letter
         <div class="hud"><span>Điểm <span id="score">0</span></span><span>Còn <span id="time">30</span> giây</span></div>
         <div class="expr" id="expr">Sẵn sàng?</div>
         <div class="opts" id="opts"></div>
+        <p class="info" id="mathBest"></p>
         <button class="btn start" id="startMath">Bắt đầu</button>
       </div>
-    </section>
-  </main>
-</div>
+    </div>
+  </section>
+
+  <!-- NHẬT KÝ -->
+  <section class="view" data-view="journal" hidden>
+    <h1>Nhật ký</h1>
+    <p class="hint">Ghi lại điều tốt đẹp và theo dõi tâm trạng của bạn.</p>
+
+    <h2>Tâm trạng 7 ngày qua</h2>
+    <div class="chart" id="chart" style="margin-top:8px"></div>
+
+    <div class="block">
+      <h2>Điều biết ơn hôm nay</h2>
+      <p class="hint" id="prompt"></p>
+      <textarea id="jText" placeholder="Viết vài dòng…" aria-label="Nội dung nhật ký"></textarea>
+      <button class="btn" style="margin-top:12px" id="jSave">Lưu vào nhật ký</button>
+    </div>
+
+    <div class="block">
+      <h2>Các trang đã viết</h2>
+      <div id="jList" class="list"></div>
+    </div>
+  </section>
+
+  <!-- CÀI ĐẶT -->
+  <section class="view" data-view="settings" hidden>
+    <h1>Cài đặt</h1>
+    <p class="hint">Thông báo lời chúc mỗi sáng và dữ liệu của bạn.</p>
+
+    <div>
+      <label class="set"><div><h3>Thông báo mỗi sáng</h3><span class="muted">Một lời chúc từ một người lạ khác nhau mỗi ngày</span></div><input type="checkbox" class="switch" id="nOn" role="switch"></label>
+      <label class="set"><div><h3>Giờ nhận thông báo</h3></div><input type="time" id="nTime"></label>
+    </div>
+    <p class="status" id="nStatus"></p>
+    <div class="row">
+      <button class="btn ghost" id="nTest">Gửi thử thông báo</button>
+    </div>
+
+    <div class="block">
+      <h2>Lời nhắn của chính bạn</h2>
+      <p class="hint">Viết điều bạn muốn tự nhắc mình. Nó sẽ thỉnh thoảng xuất hiện trong thư và thông báo.</p>
+      <input type="text" id="mineText" placeholder="Ví dụ: Mình đang làm tốt hơn mình nghĩ" aria-label="Lời nhắn của bạn" maxlength="160">
+      <button class="btn" style="margin-top:12px" id="mineAdd">Thêm lời nhắn</button>
+      <div class="list" id="mineList" style="margin-top:12px"></div>
+    </div>
+
+    <div class="block">
+      <h2>Dữ liệu</h2>
+      <p class="hint">Mọi thứ được lưu ngay trên điện thoại của bạn.</p>
+      <button class="btn ghost" id="wipe">Xóa toàn bộ dữ liệu</button>
+      <p class="status" id="wipeMsg"></p>
+    </div>
+  </section>
+
+</main></div>
+<nav class="nav" id="nav" aria-label="Điều hướng"><div class="in" id="navIn"></div></nav>
 
 <script>
 const $=id=>document.getElementById(id);
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const safe=f=>{try{return f()}catch(e){return null}};
-const store={get(k,d){const v=safe(()=>JSON.parse(localStorage.getItem(k)));return v==null?d:v},set(k,v){safe(()=>localStorage.setItem(k,JSON.stringify(v)))}};
+const asafe=async f=>{try{return await f()}catch(e){return null}};
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const keyOf=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const todayKey=()=>keyOf(new Date());
+const shortDate=k=>{const [y,m,d]=k.split('-');return `${+d}/${+m}`};
+
+// ===== lưu trữ bền vững =====
+const KEY='hello-day-v2';
+const store={
+  get(k,d){const v=safe(()=>JSON.parse(localStorage.getItem(k)));return v==null?d:v},
+  set(k,v){safe(()=>localStorage.setItem(k,JSON.stringify(v)))}
+};
+const DEF=()=>({day:'',letter:null,mood:null,tasks:[],water:0,history:[],favs:[],moodLog:{},journal:[],mine:[],
+  set:{notif:true,h:6,m:45,cat:'all'},streak:{n:0,last:''},memBest:0,mathBest:0});
+let S=Object.assign(DEF(),store.get(KEY,{}));
+S.set=Object.assign(DEF().set,S.set||{});
+S.streak=Object.assign(DEF().streak,S.streak||{});
+function save(){store.set(KEY,S)}
 
 // ===== nền trời theo giờ =====
-const h=new Date().getHours();
-document.documentElement.dataset.theme=h>=5&&h<9?'dawn':h>=9&&h<16?'day':h>=16&&h<19?'dusk':'night';
-$('hello').textContent=h<11?'Chào buổi sáng':h<14?'Chào buổi trưa':h<18?'Chào buổi chiều':'Chào buổi tối';
+const hr=new Date().getHours();
+document.documentElement.dataset.theme=hr>=5&&hr<9?'dawn':hr>=9&&hr<16?'day':hr>=16&&hr<19?'dusk':'night';
+$('hello').textContent=hr<11?'Chào buổi sáng':hr<14?'Chào buổi trưa':hr<18?'Chào buổi chiều':'Chào buổi tối';
 $('date').textContent=new Date().toLocaleDateString('vi-VN',{weekday:'long',day:'numeric',month:'long'});
 
-safe(()=>{
-  const today=new Date().toDateString();
-  let d=store.get('morning',{n:0,last:''});
-  if(d.last!==today){
-    const y=new Date();y.setDate(y.getDate()-1);
-    d.n=d.last===y.toDateString()?d.n+1:1;d.last=today;store.set('morning',d);
-  }
-  $('streak').textContent=d.n>1?`Bạn đã ghé ${d.n} ngày liên tiếp`:'Chào mừng bạn đến với ngày đầu tiên';
-});
-
-// ===== người gửi =====
+// ===== kho lời nhắn =====
 const NAM=["James","Daniel","Ethan","Lucas","Noah","Ryan","Leo","Oliver","Jack","Henry","Adam","Kevin","Tom","Max","Alex","Sam","Ben","Chris","David","Eric","Felix","George","Harry","Ian","Jacob","Liam","Mason","Nathan","Owen","Peter","Quinn","Robert","Simon","Theo","Victor","William","Aaron","Caleb","Dylan","Evan","Finn","Gavin","Isaac","Jason","Kyle","Logan","Marcus","Nick","Oscar","Paul"];
 const NU=["Emma","Lily","Sophie","Grace","Anna","Mia","Chloe","Ella","Amy","Olivia","Nora","Ruby","Kate","Zoe","Hannah","Julia","Alice","Bella","Clara","Diana","Eva","Fiona","Hazel","Iris","Jane","Karen","Laura","Maya","Nina","Paige","Rose","Sara","Tina","Uma","Vera","Wendy","Amber","Becca","Cora","Daisy","Elise","Faye","Gemma","Holly","Ivy","Jade","Lucy","Megan","Naomi","Piper"];
 const HO=["Smith","Brown","Taylor","Wilson","Davis","Clark","Lewis","Walker","Hall","Young","Allen","King","Wright","Scott","Green","Baker","Adams","Nelson","Hill","Moore","Evans","Turner","Parker","Collins","Edwards","Stewart","Morris","Rogers","Cook","Bell"];
@@ -188,8 +331,6 @@ function address(g,age){
   return{me:g==='nam'?"chú":"cô",you:"cháu"};
 }
 const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
-
-// ===== kho lời nhắn =====
 const CHEER=[
  (m,y)=>`${cap(y)} ơi, dậy thôi! ${cap(m)} không biết hôm nay ${y} gặp chuyện gì, nhưng ${m} tin ${y} xử lý được hết. 🔥`,
  (m,y)=>`Gửi ${y}, người ${m} chưa từng gặp: ${y} đã cố gắng nhiều hơn ${y} tưởng đấy. Hôm nay cứ bước tiếp nhé. 💪`,
@@ -269,65 +410,95 @@ const YOUNG=[
  (m,y)=>`Có ngày ${m} cũng chán nản lắm, rồi ${m} nhắn cho một đứa bạn thân và thấy khá hơn liền. ${cap(y)} thử xem. 💬`
 ];
 const POOL={cheer:CHEER,wish:WISH,talk:TALK};
-let cat=store.get('cat','all');
-const CATS=[["all","Tất cả"],["cheer","Cổ vũ"],["wish","Lời chúc"],["talk","Tâm sự"]];
-function drawCats(){
-  $('cats').innerHTML=CATS.map(([k,t])=>`<button data-c="${k}" aria-pressed="${cat===k}">${t}</button>`).join('');
-}
-$('cats').onclick=e=>{const b=e.target.closest('[data-c]');if(!b)return;cat=b.dataset.c;store.set('cat',cat);drawCats();newPerson()};
-drawCats();
+const hue=s=>{let x=0;for(const c of s)x=(x*31+c.charCodeAt(0))%360;return x};
 
-let lastMsg='';
-function hue(s){let x=0;for(const c of s)x=(x*31+c.charCodeAt(0))%360;return x}
-function newPerson(){
+function makeLetter(cat){
+  if(S.mine.length&&Math.random()<.2){
+    return{self:true,name:'Chính bạn',first:'Bạn',g:'',age:0,text:pick(S.mine),hue:170};
+  }
   const g=Math.random()<.5?'nam':'nu';
   const age=18+Math.floor(Math.random()*53);
   const first=g==='nam'?pick(NAM):pick(NU), last=pick(HO), name=first+' '+last;
   const {me,you}=address(g,age);
   let pool=cat==='all'?[...CHEER,...WISH,...TALK]:[...POOL[cat]];
-  if(age>=45)pool.push(...OLD.filter(()=>cat!=='wish'),...OLD.filter(()=>cat!=='wish'));
+  if(age>=45&&cat!=='wish')pool.push(...OLD,...OLD);
   if(age<30&&cat!=='wish')pool.push(...YOUNG,...YOUNG);
-  let text;do{text=pick(pool)(me,you)}while(text===lastMsg);
-  lastMsg=text;
-  $('av').textContent=first[0]+last[0];
-  $('av').style.background=`hsl(${hue(name)} 45% 38%)`;
-  $('name').textContent=name;
-  $('meta').textContent=`${g==='nam'?'Nam':'Nữ'}, ${age} tuổi`;
-  $('msg').textContent=text;
-  $('sign').textContent=first;
-  const l=$('letter');l.classList.remove('in');void l.offsetWidth;l.classList.add('in');
+  return{self:false,name,first,g,age,text:pick(pool)(me,you),hue:hue(name)};
 }
-$('more').onclick=newPerson;
-newPerson();
-
-// ===== tâm trạng =====
-const moods=[["😞","Nghe có vẻ nặng nề nhỉ. Không sao cả, cứ thấy thế nào thì cho phép mình thấy như vậy. Hôm nay mình làm nhẹ nhàng thôi."],
-["😕","Chưa ổn lắm. Thử uống một ly nước, mở cửa sổ, hít thở sâu ba lần rồi mình tính tiếp nhé."],
-["😐","Bình thường cũng là một kiểu ổn. Làm một điều nhỏ cho vui để đẩy ngày lên một chút nào."],
-["🙂","Ngon rồi! Giữ nhịp này, nhớ khen bản thân một câu."],
-["🤩","Tuyệt vời! Năng lượng này đáng được chia sẻ, bạn nhắn cho một người bạn quý nhé."]];
-$('moods').innerHTML=moods.map((m,i)=>`<button data-i="${i}" aria-pressed="false" aria-label="Tâm trạng ${i+1} trên 5">${m[0]}</button>`).join('');
-$('moods').onclick=e=>{
-  const b=e.target.closest('button');if(!b)return;
-  document.querySelectorAll('#moods button').forEach(x=>x.setAttribute('aria-pressed',x===b));
-  $('moodReply').textContent=moods[b.dataset.i][1];
-};
 
 // ===== việc nhỏ =====
-const pool=["Uống một ly nước","Mở cửa sổ đón nắng","Hít thở sâu năm lần","Đi bộ mười phút","Nghe một bài hát mình thích","Nhắn tin hỏi thăm một người mình quý","Dọn gọn mặt bàn","Viết ra một điều biết ơn","Vươn vai, duỗi người một phút","Ăn một món ngon","Gọi điện cho người thân","Khen bản thân một câu","Ra ngoài hít thở không khí","Pha một tách trà hoặc cà phê","Sắp xếp ba việc cần làm hôm nay"];
-function newTasks(){
-  const t=[...pool].sort(()=>Math.random()-.5).slice(0,3);
-  $('tasks').innerHTML=t.map(x=>`<label class="task"><input type="checkbox"><span>${x}</span></label>`).join('');
+const TASKPOOL=["Uống một ly nước","Mở cửa sổ đón nắng","Hít thở sâu năm lần","Đi bộ mười phút","Nghe một bài hát mình thích","Nhắn tin hỏi thăm một người mình quý","Dọn gọn mặt bàn","Viết ra một điều biết ơn","Vươn vai, duỗi người một phút","Ăn một món ngon","Gọi điện cho người thân","Khen bản thân một câu","Ra ngoài hít thở không khí","Pha một tách trà hoặc cà phê","Sắp xếp ba việc cần làm hôm nay"];
+const newTasks=()=>[...TASKPOOL].sort(()=>Math.random()-.5).slice(0,3).map(t=>({t,done:false}));
+
+// ===== sang ngày mới: chỉ khi đổi ngày mới làm mới =====
+function ensureDay(){
+  const t=todayKey();
+  if(S.day===t&&S.letter)return;
+  const y=new Date();y.setDate(y.getDate()-1);
+  S.streak.n=S.streak.last===keyOf(y)?S.streak.n+1:1;
+  S.streak.last=t;
+  S.day=t;
+  S.letter=makeLetter(S.set.cat);
+  S.history.unshift({...S.letter,date:t});
+  S.history=S.history.slice(0,90);
+  S.mood=null;S.tasks=newTasks();S.water=0;
+  save();
 }
-newTasks();$('newTasks').onclick=newTasks;
-$('tasks').onchange=e=>{
-  if(e.target.checked)burst(innerWidth/2,innerHeight/2);
-  if([...document.querySelectorAll('#tasks input')].every(i=>i.checked)){
-    $('msg').textContent="Bạn đã xong cả ba việc rồi. Giỏi lắm, thật đấy! 🎉";
-    $('name').textContent="Chính bạn";$('meta').textContent="Người luôn ở bên bạn";$('sign').textContent="Bạn";
-    $('av').textContent="B";$('av').style.background="hsl(170 50% 32%)";
-  }
+ensureDay();
+
+// ===== thông báo =====
+const isNative=()=>!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());
+const LN=()=>window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.LocalNotifications;
+async function scheduleNotifs(interactive){
+  const ln=LN();
+  if(!isNative()||!ln)return{ok:false,msg:'Bạn đang mở bằng trình duyệt. Thông báo mỗi sáng chỉ hoạt động khi cài file APK trên Android.'};
+  try{
+    let p=await ln.checkPermissions();
+    if(p.display!=='granted'&&interactive)p=await ln.requestPermissions();
+    if(p.display!=='granted')return{ok:false,msg:'Chưa có quyền thông báo. Hãy bật thông báo cho app trong Cài đặt của điện thoại.'};
+    await asafe(()=>ln.createChannel({id:'morning',name:'Lời chúc buổi sáng',description:'Lời nhắn mỗi sáng',importance:4,visibility:1,vibration:true}));
+    const pend=await ln.getPending();
+    if(pend.notifications&&pend.notifications.length)await ln.cancel({notifications:pend.notifications});
+    if(!S.set.notif)return{ok:true,msg:'Thông báo mỗi sáng đang tắt.'};
+    if(interactive){
+      const ex=await asafe(()=>ln.checkExactNotificationSetting());
+      if(ex&&ex.exact_alarm==='denied')await asafe(()=>ln.changeExactNotificationSetting());
+    }
+    const now=new Date(),list=[];
+    for(let i=0;i<45;i++){
+      const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i,S.set.h,S.set.m,0);
+      if(d<=now)continue;
+      const L=makeLetter(S.set.cat);
+      list.push({id:1000+i,channelId:'morning',title:'☀️ '+(L.self?'Lời nhắn từ chính bạn':L.name+' gửi bạn lời nhắn'),body:L.text,largeBody:L.text,summaryText:'Chào ngày mới',schedule:{at:d,allowWhileIdle:true}});
+    }
+    if(list.length)await ln.schedule({notifications:list});
+    const hh=String(S.set.h).padStart(2,'0'),mm=String(S.set.m).padStart(2,'0');
+    return{ok:true,msg:`Đã đặt thông báo lúc ${hh}:${mm} cho 45 ngày tới. Mỗi lần mở app, lịch sẽ được làm mới.`};
+  }catch(e){return{ok:false,msg:'Không đặt được thông báo: '+(e&&e.message?e.message:'lỗi không rõ')}}
+}
+
+// ===== điều hướng =====
+const ICON={
+ today:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.900 19.100L7 17M17 7l2.100-2.100"/>',
+ inbox:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+ relax:'<path d="M3 12c3-5 6-5 9 0s6 5 9 0"/><path d="M3 17c3-4 6-4 9 0s6 4 9 0" opacity=".6"/>',
+ journal:'<path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3V4z"/><path d="M9 9h6M9 13h4"/>',
+ settings:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>'
 };
+const TABS=[['today','Hôm nay'],['inbox','Hộp thư'],['relax','Thư giãn'],['journal','Nhật ký'],['settings','Cài đặt']];
+let curTab='today';
+$('navIn').innerHTML=TABS.map(([k,t])=>`<button data-tab="${k}"><svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg><span>${t}</span></button>`).join('');
+function showTab(k){
+  curTab=k;
+  document.querySelectorAll('[data-view]').forEach(v=>v.hidden=v.dataset.view!==k);
+  document.querySelectorAll('#navIn button').forEach(b=>{if(b.dataset.tab===k)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
+  if(k==='inbox')renderInbox();
+  if(k==='journal')renderJournal();
+  if(k==='settings')renderSettings();
+  window.scrollTo(0,0);
+}
+$('navIn').onclick=e=>{const b=e.target.closest('[data-tab]');if(b)showTab(b.dataset.tab)};
+
 function burst(x,y){
   for(let i=0;i<5;i++){
     const s=document.createElement('div');s.className='fx';s.textContent=pick(['✨','🎉','💖','⭐']);
@@ -336,7 +507,122 @@ function burst(x,y){
   }
 }
 
-// ===== tab trò chơi =====
+// ===== HÔM NAY =====
+const CATS=[["all","Tất cả"],["cheer","Cổ vũ"],["wish","Lời chúc"],["talk","Tâm sự"]];
+function drawCats(){
+  $('cats').innerHTML=CATS.map(([k,t])=>`<button data-c="${k}" aria-pressed="${S.set.cat===k}">${t}</button>`).join('');
+}
+$('cats').onclick=e=>{const b=e.target.closest('[data-c]');if(!b)return;S.set.cat=b.dataset.c;save();drawCats();drawNew()};
+const isFav=L=>S.favs.some(f=>f.text===L.text&&f.name===L.name);
+function renderLetter(anim){
+  const L=S.letter;
+  $('av').textContent=L.self?'B':L.first[0]+L.name.split(' ')[1][0];
+  $('av').style.background=`hsl(${L.hue} 45% 38%)`;
+  $('name').textContent=L.name;
+  $('meta').textContent=L.self?'Người luôn ở bên bạn':`${L.g==='nam'?'Nam':'Nữ'}, ${L.age} tuổi`;
+  $('msg').textContent=L.text;
+  $('sign').textContent=L.first;
+  const f=isFav(L);
+  $('heart').setAttribute('aria-pressed',f);$('heartTxt').textContent=f?'Đã lưu':'Lưu thư';
+  if(anim){const l=$('letter');l.classList.remove('in');void l.offsetWidth;l.classList.add('in')}
+}
+function drawNew(){
+  let L;do{L=makeLetter(S.set.cat)}while(S.letter&&L.text===S.letter.text);
+  S.letter=L;
+  S.history.unshift({...L,date:todayKey()});S.history=S.history.slice(0,90);
+  save();renderLetter(true);
+}
+$('more').onclick=drawNew;
+$('heart').onclick=()=>{
+  const L=S.letter;
+  if(isFav(L))S.favs=S.favs.filter(f=>!(f.text===L.text&&f.name===L.name));
+  else{S.favs.unshift({...L,date:todayKey()});burst(innerWidth/2,innerHeight/2)}
+  save();renderLetter(false);
+};
+
+const moods=[["😞","Nghe có vẻ nặng nề nhỉ. Không sao cả, cứ thấy thế nào thì cho phép mình thấy như vậy. Hôm nay mình làm nhẹ nhàng thôi."],
+["😕","Chưa ổn lắm. Thử uống một ly nước, mở cửa sổ, hít thở sâu ba lần rồi mình tính tiếp nhé."],
+["😐","Bình thường cũng là một kiểu ổn. Làm một điều nhỏ cho vui để đẩy ngày lên một chút nào."],
+["🙂","Ngon rồi! Giữ nhịp này, nhớ khen bản thân một câu."],
+["🤩","Tuyệt vời! Năng lượng này đáng được chia sẻ, bạn nhắn cho một người bạn quý nhé."]];
+$('moods').innerHTML=moods.map((m,i)=>`<button data-i="${i}" aria-pressed="false" aria-label="Tâm trạng ${i+1} trên 5">${m[0]}</button>`).join('');
+function renderMood(){
+  document.querySelectorAll('#moods button').forEach(b=>b.setAttribute('aria-pressed',S.mood!==null&&+b.dataset.i===S.mood));
+  $('moodReply').textContent=S.mood===null?'':moods[S.mood][1];
+}
+$('moods').onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;
+  S.mood=+b.dataset.i;S.moodLog[todayKey()]=S.mood;save();renderMood();
+};
+
+$('water').innerHTML=Array.from({length:8},(_,i)=>`<button data-i="${i}" aria-pressed="false" aria-label="Ly thứ ${i+1}"></button>`).join('');
+function renderWater(){
+  document.querySelectorAll('#water button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i<S.water));
+  $('waterHint').textContent=S.water>=8?'Đủ 8 ly rồi, cơ thể bạn cảm ơn bạn!':`Đã uống ${S.water} trên 8 ly. Chạm vào ly để ghi lại.`;
+}
+$('water').onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;
+  const n=+b.dataset.i+1;S.water=S.water===n?n-1:n;save();renderWater();
+  if(S.water===8)burst(innerWidth/2,innerHeight/2);
+};
+
+function renderTasks(){
+  $('tasks').innerHTML=S.tasks.map((x,i)=>`<label class="task"><input type="checkbox" data-i="${i}" ${x.done?'checked':''}><span>${esc(x.t)}</span></label>`).join('');
+  $('taskDone').textContent=S.tasks.every(x=>x.done)?'Bạn đã xong cả ba việc rồi. Giỏi lắm, thật đấy!':'';
+}
+$('tasks').onchange=e=>{
+  const i=+e.target.dataset.i;S.tasks[i].done=e.target.checked;save();
+  if(e.target.checked)burst(innerWidth/2,innerHeight/2);
+  $('taskDone').textContent=S.tasks.every(x=>x.done)?'Bạn đã xong cả ba việc rồi. Giỏi lắm, thật đấy!':'';
+};
+$('newTasks').onclick=()=>{S.tasks=newTasks();save();renderTasks()};
+
+function renderToday(){
+  $('streak').textContent=S.streak.n>1?`Bạn đã ghé ${S.streak.n} ngày liên tiếp`:'Chào mừng bạn đến với ngày đầu tiên';
+  drawCats();renderLetter(false);renderMood();renderWater();renderTasks();
+}
+
+// ===== HỘP THƯ =====
+let inboxTab='saved';
+function letterItem(L,withDel,idx,kind){
+  return `<div class="item"><div class="top"><b>${esc(L.name)}</b><span class="muted">${L.date?shortDate(L.date):''}</span></div><p>${esc(L.text)}</p>${withDel?`<button class="del" data-kind="${kind}" data-i="${idx}">Bỏ lưu</button>`:''}</div>`;
+}
+function renderInbox(){
+  const T=[['saved','Đã lưu'],['got','Đã nhận']];
+  $('inboxTabs').innerHTML=T.map(([k,t])=>`<button data-k="${k}" aria-pressed="${inboxTab===k}">${t}</button>`).join('');
+  let html='';
+  if(inboxTab==='saved'){
+    html=S.favs.length?`<div class="list">${S.favs.map((L,i)=>letterItem(L,true,i,'fav')).join('')}</div>`:'<p class="empty">Chưa có thư nào được lưu. Bấm “Lưu thư” ở trang Hôm nay để giữ lại lá thư bạn thích.</p>';
+  }else{
+    html=S.history.length?`<div class="list">${S.history.slice(0,60).map(L=>letterItem(L,false)).join('')}</div>`:'<p class="empty">Chưa có thư nào.</p>';
+  }
+  $('inboxBody').innerHTML=html;
+}
+$('inboxTabs').onclick=e=>{const b=e.target.closest('[data-k]');if(!b)return;inboxTab=b.dataset.k;renderInbox()};
+$('inboxBody').onclick=e=>{
+  const b=e.target.closest('.del');if(!b)return;
+  S.favs.splice(+b.dataset.i,1);save();renderInbox();
+};
+
+// ===== THƯ GIÃN: hít thở =====
+let br=null;
+async function breathLoop(me){
+  let n=0;const orb=$('orb');
+  while(!me.stop){
+    $('breathTxt').textContent='Hít vào';orb.style.transitionDuration='4s';orb.style.transform='scale(1)';
+    await wait(4000);if(me.stop)break;
+    $('breathTxt').textContent='Thở ra';orb.style.transitionDuration='6s';orb.style.transform='scale(.55)';
+    await wait(6000);if(me.stop)break;
+    n++;$('breathCnt').textContent=`Đã xong ${n} vòng`;
+  }
+}
+$('breathBtn').onclick=()=>{
+  if(br){br.stop=true;br=null;$('breathBtn').textContent='Bắt đầu';$('breathTxt').textContent='Làm tốt lắm!';
+    $('orb').style.transitionDuration='1s';$('orb').style.transform='scale(.55)';return}
+  br={stop:false};$('breathBtn').textContent='Dừng';$('breathCnt').textContent='';breathLoop(br);
+};
+
+// ===== THƯ GIÃN: trò chơi =====
 const GT=[["g1","Nhớ thứ tự"],["g2","Tính nhẩm"]];
 let curG='g1';
 function drawG(){
@@ -346,9 +632,8 @@ function drawG(){
 $('gtabs').onclick=e=>{const b=e.target.closest('[data-t]');if(!b)return;curG=b.dataset.t;drawG()};
 drawG();
 
-// ===== trò 1: nhớ thứ tự =====
-let seq=[],pos=0,lvl=0,locked=true,best=store.get('memBest',0);
-$('best').textContent=best;
+let seq=[],pos=0,lvl=0,locked=true;
+$('best').textContent=S.memBest;
 $('grid').innerHTML=Array.from({length:9},(_,i)=>`<button class="tile" data-i="${i}" aria-label="Ô ${i+1}"></button>`).join('');
 const tiles=[...document.querySelectorAll('.tile')];
 async function playSeq(){
@@ -371,14 +656,14 @@ $('grid').onclick=async e=>{
   }else{
     locked=true;t.classList.add('bad');setTimeout(()=>t.classList.remove('bad'),400);
     const done=lvl-1;
-    if(done>best){best=done;store.set('memBest',best);$('best').textContent=best}
+    if(done>S.memBest){S.memBest=done;save();$('best').textContent=S.memBest}
     $('ginfo').textContent=`Dừng ở màn ${lvl}. Bạn nhớ được ${seq.length-1} bước. Chơi lại để phá kỷ lục nhé.`;
     $('startMem').disabled=false;$('startMem').textContent='Chơi lại';
   }
 };
 
-// ===== trò 2: tính nhẩm =====
 let sc=0,left=30,tm=null,ans=0;
+$('mathBest').textContent=S.mathBest?`Kỷ lục: ${S.mathBest} điểm`:'';
 function question(){
   const t=Math.floor(Math.random()*3);let a,b,c,e;
   if(t===0){a=2+Math.floor(Math.random()*40);b=2+Math.floor(Math.random()*40);ans=a+b;e=`${a} + ${b}`}
@@ -391,6 +676,8 @@ function question(){
 }
 function endMath(){
   clearInterval(tm);tm=null;$('opts').innerHTML='';
+  if(sc>S.mathBest){S.mathBest=sc;save()}
+  $('mathBest').textContent=`Kỷ lục: ${S.mathBest} điểm`;
   $('expr').textContent=sc>=12?`${sc} điểm, quá đỉnh!`:`${sc} điểm`;
   $('startMath').disabled=false;$('startMath').textContent='Chơi lại';
 }
@@ -406,7 +693,70 @@ $('opts').onclick=e=>{
   else{left=Math.max(0,left-2);$('time').textContent=left;if(left<=0){endMath();return}}
   question();
 };
-if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+
+// ===== NHẬT KÝ =====
+const PROMPTS=["Điều gì khiến bạn mỉm cười hôm nay?","Ai đã giúp bạn một việc nhỏ gần đây?","Một điều bạn làm tốt trong tuần này là gì?","Bạn thấy biết ơn điều gì ở cơ thể mình?","Một khoảnh khắc yên bình gần đây của bạn là gì?","Bạn đang mong chờ điều gì?","Một điều giản dị khiến ngày của bạn dễ chịu hơn?"];
+function renderJournal(){
+  $('prompt').textContent=PROMPTS[new Date().getDate()%PROMPTS.length];
+  const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d)}
+  $('chart').innerHTML=days.map(d=>{
+    const m=S.moodLog[keyOf(d)];
+    return `<div class="col"><div class="face">${m==null?'–':moods[m][0]}</div><div class="bar" style="height:${m==null?4:(m+1)*18}px"></div><small>${['CN','T2','T3','T4','T5','T6','T7'][d.getDay()]}</small></div>`;
+  }).join('');
+  $('jList').innerHTML=S.journal.length?S.journal.map((j,i)=>`<div class="item"><div class="top"><b>${shortDate(j.date)}</b><button class="del" data-i="${i}">Xóa</button></div><p>${esc(j.text)}</p></div>`).join(''):'<p class="empty">Chưa có trang nào. Viết điều đầu tiên ở phía trên nhé.</p>';
+}
+$('jSave').onclick=()=>{
+  const t=$('jText').value.trim();if(!t)return;
+  S.journal.unshift({date:todayKey(),text:t});save();$('jText').value='';renderJournal();burst(innerWidth/2,innerHeight/2);
+};
+$('jList').onclick=e=>{const b=e.target.closest('.del');if(!b)return;S.journal.splice(+b.dataset.i,1);save();renderJournal()};
+
+// ===== CÀI ĐẶT =====
+function renderMine(){
+  $('mineList').innerHTML=S.mine.length?S.mine.map((t,i)=>`<div class="item"><p>${esc(t)}</p><button class="del" data-i="${i}">Xóa</button></div>`).join(''):'<p class="empty">Chưa có lời nhắn nào của bạn.</p>';
+}
+function renderSettings(){
+  $('nOn').checked=S.set.notif;
+  $('nTime').value=String(S.set.h).padStart(2,'0')+':'+String(S.set.m).padStart(2,'0');
+  $('nTest').disabled=!isNative();
+  if(!isNative())$('nStatus').textContent='Bạn đang mở bằng trình duyệt. Thông báo mỗi sáng chỉ hoạt động khi cài file APK trên Android.';
+  renderMine();
+}
+async function applyNotif(interactive){
+  const r=await scheduleNotifs(interactive);$('nStatus').textContent=r.msg;
+}
+$('nOn').onchange=e=>{S.set.notif=e.target.checked;save();applyNotif(true)};
+$('nTime').onchange=e=>{
+  const [h,m]=(e.target.value||'06:45').split(':').map(Number);
+  S.set.h=h;S.set.m=m;save();applyNotif(true);
+};
+$('nTest').onclick=async()=>{
+  const ln=LN();if(!ln)return;
+  try{
+    let p=await ln.checkPermissions();if(p.display!=='granted')p=await ln.requestPermissions();
+    if(p.display!=='granted'){$('nStatus').textContent='Chưa có quyền thông báo.';return}
+    await asafe(()=>ln.createChannel({id:'morning',name:'Lời chúc buổi sáng',description:'Lời nhắn mỗi sáng',importance:4,visibility:1,vibration:true}));
+    const L=makeLetter(S.set.cat);
+    await ln.schedule({notifications:[{id:1,channelId:'morning',title:'☀️ '+(L.self?'Lời nhắn từ chính bạn':L.name+' gửi bạn lời nhắn'),body:L.text,largeBody:L.text,schedule:{at:new Date(Date.now()+3000)}}]});
+    $('nStatus').textContent='Thông báo thử sẽ hiện sau vài giây.';
+  }catch(e){$('nStatus').textContent='Không gửi được: '+(e&&e.message?e.message:'lỗi không rõ')}
+};
+$('mineAdd').onclick=()=>{
+  const t=$('mineText').value.trim();if(!t)return;
+  S.mine.unshift(t);save();$('mineText').value='';renderMine();
+};
+$('mineList').onclick=e=>{const b=e.target.closest('.del');if(!b)return;S.mine.splice(+b.dataset.i,1);save();renderMine()};
+let wipeArmed=false;
+$('wipe').onclick=()=>{
+  if(!wipeArmed){wipeArmed=true;$('wipe').textContent='Bấm lần nữa để xóa hết';$('wipeMsg').textContent='Thao tác này không thể hoàn tác.';setTimeout(()=>{wipeArmed=false;$('wipe').textContent='Xóa toàn bộ dữ liệu';$('wipeMsg').textContent=''},5000);return}
+  safe(()=>localStorage.removeItem(KEY));S=DEF();ensureDay();wipeArmed=false;$('wipe').textContent='Xóa toàn bộ dữ liệu';$('wipeMsg').textContent='Đã xóa. Dữ liệu mới đã được tạo.';renderToday();
+};
+
+// ===== khởi động =====
+renderToday();
+showTab('today');
+if(isNative()&&S.set.notif)scheduleNotifs(false);
+if(!isNative()&&'serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
 </html>
