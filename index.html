@@ -29,7 +29,7 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg2)}
 body{margin:0;min-height:100vh;font-family:var(--ui);font-size:16px;line-height:1.5;color:var(--fg);background:linear-gradient(180deg,var(--bg1),var(--bg2) 70%) fixed;padding:max(24px,env(safe-area-inset-top)) 20px calc(104px + env(safe-area-inset-bottom))}
-.wrap{max-width:480px;margin:0 auto}
+.wrap{max-width:480px;margin:0 auto;position:relative;z-index:1}
 [hidden]{display:none!important}
 h1{font-family:var(--serif);font-weight:600;font-size:34px;line-height:1.15;margin:8px 0 4px;letter-spacing:-.01em}
 h2{font-family:var(--serif);font-weight:600;font-size:22px;margin:0 0 4px;letter-spacing:-.005em}
@@ -67,8 +67,11 @@ button{font:inherit;cursor:pointer;border:0;color:inherit}
 .heart svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}
 .heart[aria-pressed=true]{background:#FFE3E6;color:#B4233A}
 .heart[aria-pressed=true] svg{fill:currentColor}
-.letter.in{animation:unfold .45s cubic-bezier(.2,.7,.2,1)}
-@keyframes unfold{from{opacity:0;transform:translateY(10px) rotate(-.6deg)}to{opacity:1;transform:none}}
+.letter{transform-origin:50% 0}
+.letter.in{animation:unfold .7s cubic-bezier(.2,.8,.3,1)}
+@keyframes unfold{0%{opacity:0;transform:perspective(900px) rotateX(-70deg) translateY(-10px)}55%{opacity:1;transform:perspective(900px) rotateX(10deg)}100%{transform:none}}
+.msg .w{display:inline-block;opacity:0;transform:translateY(8px);animation:wordIn .5s cubic-bezier(.2,.8,.3,1) forwards;animation-delay:calc(var(--i)*45ms + 350ms)}
+@keyframes wordIn{to{opacity:1;transform:none}}
 
 /* mood, water */
 .moods{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
@@ -76,8 +79,11 @@ button{font:inherit;cursor:pointer;border:0;color:inherit}
 .moods button[aria-pressed=true]{background:var(--btn);border-color:transparent}
 .reply{margin:14px 0 0;min-height:48px}
 .water{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
-.water button{aspect-ratio:3/4;border-radius:8px 8px 14px 14px;background:var(--panel);border:1.5px solid var(--line);padding:0}
-.water button[aria-pressed=true]{background:linear-gradient(180deg,transparent 15%,#4FB6E8 15%);border-color:#2B8FC4}
+.water button{position:relative;overflow:hidden;aspect-ratio:3/4;border-radius:8px 8px 14px 14px;background:var(--panel);border:1.5px solid var(--line);padding:0;transition:transform .15s}
+.water button::after{content:"";position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(180deg,#7CCBF2,#2B8FC4);transition:height .55s cubic-bezier(.3,1.5,.5,1)}
+.water button[aria-pressed=true]{border-color:#2B8FC4}
+.water button[aria-pressed=true]::after{height:86%}
+.water button:active{transform:scale(.9)}
 
 /* tasks */
 .tasks{border-top:1px solid var(--line)}
@@ -116,7 +122,7 @@ button{font:inherit;cursor:pointer;border:0;color:inherit}
 .item p{margin:0;font-family:var(--serif);font-size:18px;line-height:1.5}
 .item .del{background:none;color:var(--muted);text-decoration:underline;text-underline-offset:3px;font-size:14px;min-height:44px;padding:0 4px}
 .empty{padding:20px 0;color:var(--muted)}
-textarea,input[type=text],input[type=time]{width:100%;font:inherit;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:var(--r);padding:12px 14px;min-height:48px}
+textarea,input[type=text],input[type=time],input[type=date],input[type=number]{width:100%;font:inherit;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:var(--r);padding:12px 14px;min-height:48px}
 textarea{resize:vertical;min-height:96px}
 .chart{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:150px;padding-top:6px}
 .chart .col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%}
@@ -138,17 +144,93 @@ textarea{resize:vertical;min-height:96px}
 /* nav */
 .nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;background:var(--nav);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom));backdrop-filter:blur(10px);z-index:20}
 .nav .in{display:flex;width:100%;max-width:480px}
-.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:56px;padding:6px 2px;background:none;font-size:12px;font-weight:500;color:var(--muted);border-radius:12px}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:56px;padding:6px 2px;background:none;font-size:11px;font-weight:500;color:var(--muted);border-radius:12px}
 .nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .nav button[aria-current=page]{color:var(--fg);font-weight:700}
 .nav button[aria-current=page] svg{stroke-width:2.4}
 
-.fx{position:fixed;pointer-events:none;font-size:26px;animation:up 1s forwards;z-index:30}
-@keyframes up{to{transform:translateY(-120px);opacity:0}}
-@media (prefers-reduced-motion:reduce){.letter.in,.fx{animation:none}.tile,.orb,.switch,.switch::after{transition:none}}
+
+/* ===== nền trời động ===== */
+.sky{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.cloud{position:absolute;left:0;width:var(--w);height:calc(var(--w)*.26);border-radius:999px;background:rgba(255,255,255,.62);animation:drift var(--t) linear var(--o) infinite;will-change:transform}
+.cloud::before,.cloud::after{content:"";position:absolute;background:inherit;border-radius:50%}
+.cloud::before{width:42%;height:150%;left:14%;top:-75%}
+.cloud::after{width:32%;height:115%;left:48%;top:-50%}
+@keyframes drift{from{transform:translateX(-300px)}to{transform:translateX(calc(100vw + 60px))}}
+.sunorb{position:absolute;right:-34px;top:70px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,#FFE49A 0 36%,rgba(255,200,87,.38) 37% 60%,transparent 70%);animation:pulse 6s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.1)}}
+.star{position:absolute;width:var(--s);height:var(--s);border-radius:50%;background:#fff;opacity:.25;animation:tw var(--d) ease-in-out var(--o) infinite}
+@keyframes tw{50%{opacity:1;transform:scale(1.7)}}
+.moon{position:absolute;right:28px;top:64px;width:54px;height:54px;border-radius:50%;box-shadow:inset -16px -4px 0 0 #FFF1BF;transform:rotate(-12deg);filter:drop-shadow(0 0 14px rgba(255,241,191,.55))}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:70}
+
+/* ===== hiệu ứng nhỏ ===== */
+.view.enter{animation:viewIn .38s cubic-bezier(.2,.8,.3,1)}
+@keyframes viewIn{from{opacity:0;transform:translateX(var(--dx,24px))}to{opacity:1;transform:none}}
+.nav button[aria-current=page] svg{animation:navPop .5s cubic-bezier(.2,.9,.3,1.3)}
+@keyframes navPop{0%{transform:scale(.7) translateY(4px)}60%{transform:scale(1.22) translateY(-3px)}100%{transform:none}}
+.moods button[aria-pressed=true]{animation:bounce .55s cubic-bezier(.2,.9,.3,1.3)}
+@keyframes bounce{0%{transform:scale(.8)}50%{transform:scale(1.25) rotate(-6deg)}100%{transform:scale(1)}}
+.moods button:active{transform:scale(.9)}
+.task input:checked{animation:pop .3s}
+@keyframes pop{50%{transform:scale(1.35)}}
+.flame{display:inline-block;transform-origin:50% 90%;animation:flame 1.4s ease-in-out infinite}
+@keyframes flame{0%,100%{transform:scale(1) rotate(0)}25%{transform:scale(1.12,1.22) rotate(-5deg)}50%{transform:scale(.96,1.04) rotate(3deg)}75%{transform:scale(1.1,1.14) rotate(-2deg)}}
+.heart[aria-pressed=true] svg{animation:beat .5s cubic-bezier(.2,.9,.3,1.4)}
+@keyframes beat{0%{transform:scale(.6)}60%{transform:scale(1.35)}100%{transform:scale(1)}}
+.btn{transition:transform .15s,opacity .2s}
+
+/* ===== toast ===== */
+.toasts{position:fixed;left:0;right:0;bottom:calc(92px + env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;gap:8px;z-index:80;pointer-events:none;padding:0 16px}
+.toast{max-width:440px;background:var(--ink);color:#fff;padding:12px 16px;border-radius:14px;font-size:14px;font-weight:500;border:1px solid rgba(255,255,255,.2);box-shadow:0 10px 24px -8px rgba(0,0,0,.45);animation:toastIn .4s cubic-bezier(.2,.9,.3,1.25)}
+.toast.out{animation:toastOut .3s forwards}
+.toast.alert{background:var(--sun);color:var(--ink);font-weight:700;font-size:16px;border:0}
+@keyframes toastIn{from{opacity:0;transform:translateY(24px) scale(.92)}to{opacity:1;transform:none}}
+@keyframes toastOut{to{opacity:0;transform:translateY(12px)}}
+
+/* ===== lời nhắc ===== */
+.item.rem{animation:itemIn .45s cubic-bezier(.2,.8,.3,1) both;animation-delay:calc(var(--k,0)*60ms)}
+@keyframes itemIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.rem .rtop{display:flex;align-items:center;gap:12px}
+.rem .rmain{flex:1;text-align:left;background:none;padding:0;display:flex;flex-direction:column;gap:2px;min-height:44px}
+.rem .rmain b{font-size:17px}
+.rem .next{font-weight:600;font-size:14px}
+.rem.off .rmain{opacity:.55}
+.emptyrem{display:flex;flex-direction:column;align-items:center;text-align:center;padding:28px 12px;color:var(--muted)}
+.bell{width:64px;height:64px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transform-origin:50% 8%;animation:ring 2.6s ease-in-out infinite;margin-bottom:8px}
+@keyframes ring{0%,55%,100%{transform:rotate(0)}10%{transform:rotate(14deg)}20%{transform:rotate(-12deg)}30%{transform:rotate(8deg)}40%{transform:rotate(-5deg)}}
+
+/* ===== form tạo lời nhắc ===== */
+.sheet-back{position:fixed;inset:0;background:rgba(8,16,32,.5);z-index:60;opacity:0;transition:opacity .25s}
+.sheet-back.open{opacity:1}
+.sheet{position:fixed;left:0;right:0;bottom:0;margin:0 auto;max-width:520px;max-height:92vh;overflow:auto;background:#fff;color:var(--ink);border-radius:24px 24px 0 0;padding:12px 20px calc(24px + env(safe-area-inset-bottom));z-index:61;transform:translateY(100%);transition:transform .38s cubic-bezier(.2,.9,.3,1)}
+.sheet.open{transform:none}
+.sheet.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.grab{width:44px;height:5px;border-radius:3px;background:#D0D8E2;margin:0 auto 14px}
+.sheet h2{margin-bottom:14px}
+.f{display:block;margin:0 0 14px}
+.f>span{display:block;font-size:14px;font-weight:600;margin-bottom:6px;color:#3B4A63}
+.f2{display:grid;grid-template-columns:1.3fr 1fr;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:40px;padding:6px 14px;border-radius:999px;background:#EEF3F8;color:var(--ink);font-size:14px;font-weight:500;transition:background .15s,transform .15s}
+.chip[aria-pressed=true]{background:var(--lagoon);color:#fff;font-weight:600;transform:scale(1.04)}
+.chip:active{transform:scale(.94)}
+.inline{display:flex;align-items:center;gap:10px;margin-top:10px}
+.inline input{width:96px}
+.sum{background:#F4F8FB;border-radius:12px;padding:12px 14px;font-size:14px;min-height:48px;margin:6px 0 14px;color:#2A3A55}
+.sum.err{background:#FFE9EB;color:#9B1C2E}
+.sheet .btn.ghost{background:#EEF3F8;color:var(--ink);border:0}
+.sheet .btn{background:var(--lagoon);color:#fff}
+.sheet .link{color:#B4233A;display:block;margin:6px auto 0}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 </style>
 </head>
 <body>
+<div class="sky" id="sky" aria-hidden="true"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="toasts" id="toasts" aria-live="polite"></div>
 <div class="wrap"><main>
 
   <!-- HÔM NAY -->
@@ -191,6 +273,15 @@ textarea{resize:vertical;min-height:96px}
       <div class="done-line" id="taskDone"></div>
       <button class="link" id="newTasks">Đổi việc khác</button>
     </div>
+  </section>
+
+  <!-- NHẮC VIỆC -->
+  <section class="view" data-view="remind" hidden>
+    <h1>Nhắc việc</h1>
+    <p class="hint">Tạo lời nhắc theo ngày giờ, có thể lặp lại cho đến khi bạn muốn dừng.</p>
+    <button class="btn" id="remNew">Tạo lời nhắc mới</button>
+    <div class="block"><h2>Sắp tới</h2><div id="remUp" class="list" style="margin-top:8px"></div></div>
+    <div class="block" id="remPastBlock" hidden><h2>Đã qua hoặc đang tắt</h2><div id="remPast" class="list" style="margin-top:8px"></div></div>
   </section>
 
   <!-- HỘP THƯ -->
@@ -289,12 +380,37 @@ textarea{resize:vertical;min-height:96px}
   </section>
 
 </main></div>
+<div class="sheet-back" id="sheetBack" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+  <div class="grab"></div>
+  <h2 id="sheetTitle">Lời nhắc mới</h2>
+  <label class="f"><span>Tên lời nhắc</span><input type="text" id="rTitle" maxlength="80" placeholder="Ví dụ: Uống thuốc"></label>
+  <label class="f"><span>Ghi chú (không bắt buộc)</span><input type="text" id="rNote" maxlength="120" placeholder="Ví dụ: Sau bữa tối"></label>
+  <div class="f2">
+    <label class="f"><span>Ngày</span><input type="date" id="rDate"></label>
+    <label class="f"><span>Giờ</span><input type="time" id="rTime"></label>
+  </div>
+  <div class="f"><div class="chips" id="rQuick"></div></div>
+  <div class="f"><span>Lặp lại</span><div class="chips" id="rRep"></div></div>
+  <div class="f" id="rEveryBox" hidden><div class="inline">Mỗi <input type="number" id="rEvery" min="2" max="90" inputmode="numeric"> ngày</div></div>
+  <div class="f" id="rDaysBox" hidden><span>Vào các thứ</span><div class="chips" id="rDays"></div></div>
+  <div class="f" id="rEndBox" hidden>
+    <span>Dừng lặp lại</span>
+    <div class="chips" id="rEnd"></div>
+    <div class="inline" id="rUntilBox" hidden>Đến ngày <input type="date" id="rUntil" style="width:auto;flex:1"></div>
+    <div class="inline" id="rCountBox" hidden>Sau <input type="number" id="rCount" min="1" max="999" inputmode="numeric"> lần</div>
+  </div>
+  <p class="sum" id="rSum"></p>
+  <div class="row"><button class="btn ghost" id="rCancel">Hủy</button><button class="btn" id="rSave">Lưu lời nhắc</button></div>
+  <button class="link" id="rDelete" hidden>Xóa lời nhắc này</button>
+</div>
 <nav class="nav" id="nav" aria-label="Điều hướng"><div class="in" id="navIn"></div></nav>
 
 <script>
 const $=id=>document.getElementById(id);
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const safe=f=>{try{return f()}catch(e){return null}};
+const RM=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
 const asafe=async f=>{try{return await f()}catch(e){return null}};
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -308,7 +424,7 @@ const store={
   get(k,d){const v=safe(()=>JSON.parse(localStorage.getItem(k)));return v==null?d:v},
   set(k,v){safe(()=>localStorage.setItem(k,JSON.stringify(v)))}
 };
-const DEF=()=>({day:'',letter:null,mood:null,tasks:[],water:0,history:[],favs:[],moodLog:{},journal:[],mine:[],
+const DEF=()=>({day:'',letter:null,mood:null,tasks:[],water:0,history:[],favs:[],moodLog:{},journal:[],mine:[],rem:[],remSeq:1,fired:{},
   set:{notif:true,h:6,m:45,cat:'all'},streak:{n:0,last:''},memBest:0,mathBest:0});
 let S=Object.assign(DEF(),store.get(KEY,{}));
 S.set=Object.assign(DEF().set,S.set||{});
@@ -446,34 +562,101 @@ function ensureDay(){
 }
 ensureDay();
 
+// ===== lời nhắc: lịch lặp =====
+const WD=['CN','T2','T3','T4','T5','T6','T7'];
+const WDL=['Chủ nhật','Thứ hai','Thứ ba','Thứ tư','Thứ năm','Thứ sáu','Thứ bảy'];
+const hhmm=d=>String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+function parseDT(date,time){const [y,m,d]=date.split('-').map(Number);const [h,mi]=(time||'00:00').split(':').map(Number);return new Date(y,m-1,d,h,mi,0)}
+function dayMatches(r,d,day0){
+  switch(r.rep){
+    case 'daily':return true;
+    case 'every':return Math.round((d-day0)/864e5)%Math.max(2,+r.every||2)===0;
+    case 'weekly':return (r.days&&r.days.length?r.days:[day0.getDay()]).includes(d.getDay());
+    case 'monthly':{const dim=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();return d.getDate()===Math.min(day0.getDate(),dim)}
+    default:return true;
+  }
+}
+// các lần nhắc nằm trong (from, to], tối đa max lần
+function occurrences(r,from,to,max){
+  const out=[],start=parseDT(r.date,r.time);
+  const day0=new Date(start.getFullYear(),start.getMonth(),start.getDate());
+  const until=r.rep!=='none'&&r.end==='date'&&r.until?parseDT(r.until,'23:59'):null;
+  const maxCount=r.rep!=='none'&&r.end==='count'?Math.max(1,+r.count||1):Infinity;
+  let count=0;
+  for(const d=new Date(day0);d<=to&&out.length<max;d.setDate(d.getDate()+1)){
+    if(until&&d>until)break;
+    if(!dayMatches(r,d,day0))continue;
+    if(count>=maxCount)break;
+    count++;
+    const dt=new Date(d.getFullYear(),d.getMonth(),d.getDate(),start.getHours(),start.getMinutes());
+    if(dt>from)out.push(dt);
+    if(r.rep==='none')break;
+  }
+  return out;
+}
+function nextOcc(r){const a=occurrences(r,new Date(),new Date(Date.now()+1000*864e5/1000*800),1);return a[0]||null}
+function describe(r){
+  const t=r.time||'--:--';
+  if(!r.date)return '';
+  const start=parseDT(r.date,r.time),sd=`${start.getDate()}/${start.getMonth()+1}`;
+  if(r.rep==='none')return `Một lần, lúc ${t} ngày ${sd}`;
+  let s;
+  if(r.rep==='daily')s=`Hằng ngày lúc ${t}`;
+  else if(r.rep==='every')s=`Mỗi ${Math.max(2,+r.every||2)} ngày lúc ${t}`;
+  else if(r.rep==='weekly'){
+    const ds=(r.days&&r.days.length?r.days:[start.getDay()]).slice().sort((a,b)=>((a+6)%7)-((b+6)%7));
+    s=`Hằng tuần vào ${ds.map(d=>WD[d]).join(', ')} lúc ${t}`;
+  }else s=`Hằng tháng vào ngày ${start.getDate()} lúc ${t}`;
+  if(start>new Date())s+=`, bắt đầu từ ${sd}`;
+  if(r.end==='date'&&r.until){const u=parseDT(r.until,'00:00');s+=`, đến ngày ${u.getDate()}/${u.getMonth()+1}`}
+  else if(r.end==='count')s+=`, tổng ${Math.max(1,+r.count||1)} lần`;
+  return s;
+}
+function relLabel(dt){
+  const t=new Date(),tm=new Date(t.getFullYear(),t.getMonth(),t.getDate()+1);
+  if(keyOf(dt)===keyOf(t))return 'Hôm nay '+hhmm(dt);
+  if(keyOf(dt)===keyOf(tm))return 'Ngày mai '+hhmm(dt);
+  return `${WDL[dt.getDay()]}, ${dt.getDate()}/${dt.getMonth()+1} lúc ${hhmm(dt)}`;
+}
+
 // ===== thông báo =====
 const isNative=()=>!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());
 const LN=()=>window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.LocalNotifications;
 async function scheduleNotifs(interactive){
   const ln=LN();
-  if(!isNative()||!ln)return{ok:false,msg:'Bạn đang mở bằng trình duyệt. Thông báo mỗi sáng chỉ hoạt động khi cài file APK trên Android.'};
+  if(!isNative()||!ln)return{ok:false,msg:'Bạn đang mở bằng trình duyệt. Thông báo chỉ hoạt động khi cài file APK trên Android.'};
   try{
     let p=await ln.checkPermissions();
     if(p.display!=='granted'&&interactive)p=await ln.requestPermissions();
     if(p.display!=='granted')return{ok:false,msg:'Chưa có quyền thông báo. Hãy bật thông báo cho app trong Cài đặt của điện thoại.'};
     await asafe(()=>ln.createChannel({id:'morning',name:'Lời chúc buổi sáng',description:'Lời nhắn mỗi sáng',importance:4,visibility:1,vibration:true}));
+    await asafe(()=>ln.createChannel({id:'reminders',name:'Lời nhắc',description:'Lời nhắc do bạn tạo',importance:5,visibility:1,vibration:true}));
     const pend=await ln.getPending();
     if(pend.notifications&&pend.notifications.length)await ln.cancel({notifications:pend.notifications});
-    if(!S.set.notif)return{ok:true,msg:'Thông báo mỗi sáng đang tắt.'};
     if(interactive){
       const ex=await asafe(()=>ln.checkExactNotificationSetting());
       if(ex&&ex.exact_alarm==='denied')await asafe(()=>ln.changeExactNotificationSetting());
     }
-    const now=new Date(),list=[];
-    for(let i=0;i<45;i++){
-      const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i,S.set.h,S.set.m,0);
-      if(d<=now)continue;
-      const L=makeLetter(S.set.cat);
-      list.push({id:1000+i,channelId:'morning',title:'☀️ '+(L.self?'Lời nhắn từ chính bạn':L.name+' gửi bạn lời nhắn'),body:L.text,largeBody:L.text,summaryText:'Chào ngày mới',schedule:{at:d,allowWhileIdle:true}});
+    const now=new Date(),list=[];let nm=0,nr=0;
+    if(S.set.notif){
+      for(let i=0;i<45;i++){
+        const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i,S.set.h,S.set.m,0);
+        if(d<=now)continue;
+        const L=makeLetter(S.set.cat);
+        list.push({id:1000+i,channelId:'morning',title:'☀️ '+(L.self?'Lời nhắn từ chính bạn':L.name+' gửi bạn lời nhắn'),body:L.text,largeBody:L.text,summaryText:'Chào ngày mới',schedule:{at:d,allowWhileIdle:true}});nm++;
+      }
     }
+    const horizon=new Date(now.getFullYear(),now.getMonth(),now.getDate()+60,23,59);
+    S.rem.forEach(r=>{
+      if(!r.on)return;
+      occurrences(r,now,horizon,60).forEach((dt,k)=>{
+        const body=r.note||'Đến giờ rồi!';
+        list.push({id:100000+(r.n%20000)*100+k,channelId:'reminders',title:'⏰ '+r.title,body,largeBody:body,summaryText:'Lời nhắc',schedule:{at:dt,allowWhileIdle:true}});nr++;
+      });
+    });
     if(list.length)await ln.schedule({notifications:list});
     const hh=String(S.set.h).padStart(2,'0'),mm=String(S.set.m).padStart(2,'0');
-    return{ok:true,msg:`Đã đặt thông báo lúc ${hh}:${mm} cho 45 ngày tới. Mỗi lần mở app, lịch sẽ được làm mới.`};
+    return{ok:true,msg:`Đã đặt lịch: ${nm} lời chúc buổi sáng${nm?` (lúc ${hh}:${mm})`:''} và ${nr} lần nhắc việc. Lịch được làm mới mỗi lần bạn mở app.`};
   }catch(e){return{ok:false,msg:'Không đặt được thông báo: '+(e&&e.message?e.message:'lỗi không rõ')}}
 }
 
@@ -483,29 +666,79 @@ const ICON={
  inbox:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
  relax:'<path d="M3 12c3-5 6-5 9 0s6 5 9 0"/><path d="M3 17c3-4 6-4 9 0s6 4 9 0" opacity=".6"/>',
  journal:'<path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3V4z"/><path d="M9 9h6M9 13h4"/>',
+ remind:'<path d="M6 16v-5a6 6 0 0112 0v5l1.5 2h-15L6 16z"/><path d="M10 21h4"/>',
  settings:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>'
 };
-const TABS=[['today','Hôm nay'],['inbox','Hộp thư'],['relax','Thư giãn'],['journal','Nhật ký'],['settings','Cài đặt']];
+const TABS=[['today','Hôm nay'],['inbox','Thư'],['remind','Nhắc việc'],['relax','Thư giãn'],['journal','Nhật ký'],['settings','Cài đặt']];
 let curTab='today';
 $('navIn').innerHTML=TABS.map(([k,t])=>`<button data-tab="${k}"><svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg><span>${t}</span></button>`).join('');
 function showTab(k){
+  const order=TABS.map(t=>t[0]),prev=curTab;
   curTab=k;
   document.querySelectorAll('[data-view]').forEach(v=>v.hidden=v.dataset.view!==k);
   document.querySelectorAll('#navIn button').forEach(b=>{if(b.dataset.tab===k)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
+  const v=document.querySelector(`[data-view="${k}"]`);
+  v.style.setProperty('--dx',(order.indexOf(k)>=order.indexOf(prev)?1:-1)*28+'px');
+  v.classList.remove('enter');void v.offsetWidth;v.classList.add('enter');
   if(k==='inbox')renderInbox();
+  if(k==='remind')renderRem();
   if(k==='journal')renderJournal();
   if(k==='settings')renderSettings();
   window.scrollTo(0,0);
 }
 $('navIn').onclick=e=>{const b=e.target.closest('[data-tab]');if(b)showTab(b.dataset.tab)};
 
-function burst(x,y){
-  for(let i=0;i<5;i++){
-    const s=document.createElement('div');s.className='fx';s.textContent=pick(['✨','🎉','💖','⭐']);
-    s.style.left=(x+Math.random()*80-40)+'px';s.style.top=y+'px';
-    document.body.appendChild(s);setTimeout(()=>s.remove(),1000);
+// ===== hiệu ứng =====
+const cv=$('fx');let cx=null;safe(()=>{cx=cv.getContext('2d')});
+let parts=[],raf=0;
+function sizeCv(){const r=window.devicePixelRatio||1;cv.width=innerWidth*r;cv.height=innerHeight*r;if(cx)cx.setTransform(r,0,0,r,0,0)}
+sizeCv();addEventListener('resize',sizeCv);
+function tick(){
+  cx.clearRect(0,0,innerWidth,innerHeight);
+  parts=parts.filter(p=>p.life<120&&p.y<innerHeight+30);
+  for(const p of parts){
+    p.life++;p.vy+=.28;p.x+=p.vx;p.y+=p.vy;p.vx*=.99;p.r+=p.vr;
+    cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.globalAlpha=Math.max(0,1-p.life/120);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/3,p.s,p.s*.6);cx.restore();
+  }
+  raf=parts.length?requestAnimationFrame(tick):0;
+  if(!raf)cx.clearRect(0,0,innerWidth,innerHeight);
+}
+function confetti(x,y,n=48){
+  if(RM||!cx)return;
+  const cols=['#FFC857','#17697A','#FF7A8A','#7BD389','#7AA2FF','#ffffff'];
+  for(let i=0;i<n;i++)parts.push({x,y,vx:(Math.random()-.5)*10,vy:-Math.random()*10-4,s:6+Math.random()*7,r:Math.random()*6,vr:(Math.random()-.5)*.4,c:pick(cols),life:0});
+  if(!raf)raf=requestAnimationFrame(tick);
+}
+function burst(x,y){confetti(x,y,44)}
+function heartBurst(el){
+  if(RM)return;
+  const r=el.getBoundingClientRect();
+  for(let i=0;i<9;i++){
+    const h=document.createElement('div');h.textContent='❤';
+    h.style.cssText=`position:fixed;left:${r.left+24}px;top:${r.top+14}px;font-size:${12+Math.random()*12}px;color:#E5484D;pointer-events:none;z-index:75`;
+    document.body.appendChild(h);
+    if(typeof h.animate!=='function'){h.remove();continue}
+    const a=-Math.PI/2+(Math.random()-.5)*2.4,dist=50+Math.random()*60;
+    h.animate([{transform:'translate(0,0) scale(.4)',opacity:1},{transform:`translate(${Math.cos(a)*dist}px,${Math.sin(a)*dist}px) scale(1.3)`,opacity:0}],{duration:800+Math.random()*300,easing:'cubic-bezier(.2,.8,.3,1)'}).onfinish=()=>h.remove();
   }
 }
+function toast(msg,kind,ms){
+  const t=document.createElement('div');t.className='toast'+(kind?' '+kind:'');t.textContent=msg;
+  $('toasts').appendChild(t);
+  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),320)},ms||3200);
+}
+function buildSky(){
+  const th=document.documentElement.dataset.theme,r=(a,b)=>a+Math.random()*(b-a);let h='';
+  if(th==='night'){
+    for(let i=0;i<30;i++)h+=`<i class="star" style="left:${r(0,100).toFixed(1)}%;top:${r(0,75).toFixed(1)}%;--s:${r(1.5,3.2).toFixed(1)}px;--d:${r(2,5).toFixed(1)}s;--o:-${r(0,5).toFixed(1)}s"></i>`;
+    h+='<i class="moon"></i>';
+  }else{
+    h+='<i class="sunorb"></i>';
+    for(let i=0;i<5;i++)h+=`<i class="cloud" style="--w:${Math.round(r(110,230))}px;top:${r(4,70).toFixed(0)}%;--t:${Math.round(r(70,140))}s;--o:-${Math.round(r(0,120))}s"></i>`;
+  }
+  $('sky').innerHTML=h;
+}
+buildSky();
 
 // ===== HÔM NAY =====
 const CATS=[["all","Tất cả"],["cheer","Cổ vũ"],["wish","Lời chúc"],["talk","Tâm sự"]];
@@ -520,7 +753,8 @@ function renderLetter(anim){
   $('av').style.background=`hsl(${L.hue} 45% 38%)`;
   $('name').textContent=L.name;
   $('meta').textContent=L.self?'Người luôn ở bên bạn':`${L.g==='nam'?'Nam':'Nữ'}, ${L.age} tuổi`;
-  $('msg').textContent=L.text;
+  if(anim&&!RM)$('msg').innerHTML=L.text.split(' ').map((w,i)=>`<span class="w" style="--i:${i}">${esc(w)}</span>`).join(' ');
+  else $('msg').textContent=L.text;
   $('sign').textContent=L.first;
   const f=isFav(L);
   $('heart').setAttribute('aria-pressed',f);$('heartTxt').textContent=f?'Đã lưu':'Lưu thư';
@@ -536,7 +770,7 @@ $('more').onclick=drawNew;
 $('heart').onclick=()=>{
   const L=S.letter;
   if(isFav(L))S.favs=S.favs.filter(f=>!(f.text===L.text&&f.name===L.name));
-  else{S.favs.unshift({...L,date:todayKey()});burst(innerWidth/2,innerHeight/2)}
+  else{S.favs.unshift({...L,date:todayKey()});heartBurst($('heart'))}
   save();renderLetter(false);
 };
 
@@ -578,8 +812,150 @@ $('tasks').onchange=e=>{
 $('newTasks').onclick=()=>{S.tasks=newTasks();save();renderTasks()};
 
 function renderToday(){
-  $('streak').textContent=S.streak.n>1?`Bạn đã ghé ${S.streak.n} ngày liên tiếp`:'Chào mừng bạn đến với ngày đầu tiên';
+  $('streak').innerHTML=S.streak.n>1?`<span class="flame">🔥</span> Bạn đã ghé ${S.streak.n} ngày liên tiếp`:'Chào mừng bạn đến với ngày đầu tiên';
   drawCats();renderLetter(false);renderMood();renderWater();renderTasks();
+}
+
+// ===== NHẮC VIỆC =====
+function remItem(r,k){
+  const nx=nextOcc(r),off=!r.on||!nx;
+  const status=!r.on?'Đang tắt':!nx?'Đã qua':'Lần tới: '+relLabel(nx);
+  return `<div class="item rem ${off?'off':''}" style="--k:${k}"><div class="rtop"><button class="rmain" data-edit="${r.n}"><b>${esc(r.title)}</b><span class="muted">${esc(describe(r))}</span><span class="next">${status}</span></button><input type="checkbox" class="switch" data-on="${r.n}" aria-label="Bật tắt lời nhắc ${esc(r.title)}" ${r.on?'checked':''}></div></div>`;
+}
+function renderRem(){
+  const up=[],past=[];
+  S.rem.forEach(r=>{const nx=nextOcc(r);(r.on&&nx?up:past).push({r,nx})});
+  up.sort((a,b)=>a.nx-b.nx);
+  $('remUp').innerHTML=up.length?up.map((o,i)=>remItem(o.r,i)).join(''):'<div class="emptyrem"><svg class="bell" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16v-5a6 6 0 0112 0v5l1.5 2h-15L6 16z"/><path d="M10 21h4"/></svg><p>Chưa có lời nhắc nào sắp tới.<br>Bấm “Tạo lời nhắc mới” để bắt đầu.</p></div>';
+  $('remPastBlock').hidden=!past.length;
+  $('remPast').innerHTML=past.map((o,i)=>remItem(o.r,i)).join('');
+}
+const findRem=n=>S.rem.find(r=>r.n===+n);
+async function syncNotifs(){
+  const res=await scheduleNotifs(true);
+  if(isNative())toast(res.msg,res.ok?'':'');
+}
+function onRemClick(e){const b=e.target.closest('[data-edit]');if(b)openSheet(findRem(b.dataset.edit))}
+function onRemChange(e){
+  const sw=e.target.closest('[data-on]');if(!sw)return;
+  const r=findRem(sw.dataset.on);r.on=sw.checked;save();renderRem();syncNotifs();
+}
+$('remUp').onclick=onRemClick;$('remPast').onclick=onRemClick;
+$('remUp').onchange=onRemChange;$('remPast').onchange=onRemChange;
+$('remNew').onclick=()=>openSheet(null);
+
+const REPS=[['none','Không lặp'],['daily','Hằng ngày'],['weekly','Hằng tuần'],['monthly','Hằng tháng'],['every','Mỗi … ngày']];
+const ENDS=[['never','Không bao giờ'],['date','Đến ngày'],['count','Sau số lần']];
+const WORDER=[1,2,3,4,5,6,0];
+let F=null;
+function freshForm(){
+  const d=new Date(Date.now()+3600e3);
+  return{n:0,title:'',note:'',date:keyOf(d),time:String(d.getHours()).padStart(2,'0')+':00',rep:'none',every:2,days:[],end:'never',until:'',count:5,on:true};
+}
+function openSheet(r){
+  F=r?{...r,days:[...(r.days||[])]}:freshForm();
+  $('sheetTitle').textContent=r?'Sửa lời nhắc':'Lời nhắc mới';
+  $('rTitle').value=F.title;$('rNote').value=F.note||'';$('rDate').value=F.date;$('rTime').value=F.time;
+  $('rEvery').value=F.every;$('rUntil').value=F.until||'';$('rCount').value=F.count;
+  $('rDelete').hidden=!r;
+  drawForm();
+  $('sheetBack').hidden=false;$('sheet').hidden=false;
+  document.body.style.overflow='hidden';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{$('sheetBack').classList.add('open');$('sheet').classList.add('open')}));
+  if(!r)safe(()=>$('rTitle').focus());
+}
+function closeSheet(){
+  $('sheetBack').classList.remove('open');$('sheet').classList.remove('open');
+  document.body.style.overflow='';
+  setTimeout(()=>{$('sheetBack').hidden=true;$('sheet').hidden=true},320);
+}
+function quickDates(){
+  const t=new Date(),d=n=>keyOf(new Date(t.getFullYear(),t.getMonth(),t.getDate()+n));
+  return [['Hôm nay',d(0)],['Ngày mai',d(1)],['Tuần sau',d(7)]];
+}
+function drawForm(){
+  $('rQuick').innerHTML=quickDates().map(([t,k])=>`<button type="button" class="chip" data-q="${k}" aria-pressed="${F.date===k}">${t}</button>`).join('');
+  $('rRep').innerHTML=REPS.map(([k,t])=>`<button type="button" class="chip" data-rep="${k}" aria-pressed="${F.rep===k}">${t}</button>`).join('');
+  $('rDays').innerHTML=WORDER.map(d=>`<button type="button" class="chip" data-d="${d}" aria-pressed="${F.days.includes(d)}">${WD[d]}</button>`).join('');
+  $('rEnd').innerHTML=ENDS.map(([k,t])=>`<button type="button" class="chip" data-end="${k}" aria-pressed="${F.end===k}">${t}</button>`).join('');
+  const rep=F.rep!=='none';
+  $('rEveryBox').hidden=F.rep!=='every';
+  $('rDaysBox').hidden=F.rep!=='weekly';
+  $('rEndBox').hidden=!rep;
+  $('rUntilBox').hidden=!(rep&&F.end==='date');
+  $('rCountBox').hidden=!(rep&&F.end==='count');
+  updateSum();
+}
+function validate(){
+  if(!F.title.trim())return 'Hãy đặt tên cho lời nhắc.';
+  if(!F.date||!F.time)return 'Hãy chọn ngày và giờ.';
+  if(F.rep==='none'&&parseDT(F.date,F.time)<=new Date())return 'Thời điểm này đã qua. Hãy chọn một giờ trong tương lai.';
+  if(F.rep==='every'&&(+F.every<2||+F.every>90))return 'Số ngày lặp phải từ 2 đến 90.';
+  if(F.rep!=='none'&&F.end==='date'){
+    if(!F.until)return 'Hãy chọn ngày kết thúc.';
+    if(parseDT(F.until,'23:59')<parseDT(F.date,F.time))return 'Ngày kết thúc phải sau ngày bắt đầu.';
+  }
+  if(F.rep!=='none'&&F.end==='count'&&(+F.count<1||+F.count>999))return 'Số lần phải từ 1 đến 999.';
+  if(F.rep!=='none'&&!nextOcc(F))return 'Lời nhắc này không còn lần nào trong tương lai.';
+  return '';
+}
+function updateSum(){
+  const err=validate(),el=$('sum')||$('rSum');
+  const sum=$('rSum');
+  if(err&&F.title.trim()&&F.date&&F.time){sum.textContent=err;sum.classList.add('err')}
+  else{
+    sum.classList.remove('err');
+    const nx=F.date&&F.time&&!err?nextOcc(F):null;
+    sum.textContent=F.date&&F.time?describe(F)+(nx?`. Lần tới: ${relLabel(nx)}.`:'.'):'Chọn ngày và giờ để xem tóm tắt.';
+  }
+}
+$('rTitle').oninput=e=>{F.title=e.target.value;updateSum()};
+$('rNote').oninput=e=>{F.note=e.target.value};
+$('rDate').onchange=e=>{F.date=e.target.value;drawForm()};
+$('rTime').onchange=e=>{F.time=e.target.value;updateSum()};
+$('rEvery').oninput=e=>{F.every=+e.target.value;updateSum()};
+$('rUntil').onchange=e=>{F.until=e.target.value;updateSum()};
+$('rCount').oninput=e=>{F.count=+e.target.value;updateSum()};
+$('rQuick').onclick=e=>{const b=e.target.closest('[data-q]');if(!b)return;F.date=b.dataset.q;$('rDate').value=F.date;drawForm()};
+$('rRep').onclick=e=>{const b=e.target.closest('[data-rep]');if(!b)return;F.rep=b.dataset.rep;drawForm()};
+$('rDays').onclick=e=>{const b=e.target.closest('[data-d]');if(!b)return;const d=+b.dataset.d;F.days=F.days.includes(d)?F.days.filter(x=>x!==d):[...F.days,d];drawForm()};
+$('rEnd').onclick=e=>{const b=e.target.closest('[data-end]');if(!b)return;F.end=b.dataset.end;drawForm()};
+$('rCancel').onclick=closeSheet;
+$('sheetBack').onclick=closeSheet;
+$('rDelete').onclick=()=>{
+  S.rem=S.rem.filter(r=>r.n!==F.n);save();closeSheet();renderRem();toast('Đã xóa lời nhắc');syncNotifs();
+};
+$('rSave').onclick=()=>{
+  const err=validate();
+  if(err){
+    const sum=$('rSum');sum.textContent=err;sum.classList.add('err');
+    const sh=$('sheet');sh.classList.remove('shake');void sh.offsetWidth;sh.classList.add('shake');return;
+  }
+  const r={...F,title:F.title.trim(),note:(F.note||'').trim(),on:true};
+  if(!r.n){r.n=S.remSeq++;S.rem.push(r)}else{const i=S.rem.findIndex(x=>x.n===r.n);S.rem[i]=r}
+  save();closeSheet();renderRem();
+  const b=$('rSave').getBoundingClientRect();confetti(b.left+b.width/2,b.top,40);
+  toast('Đã lưu lời nhắc');
+  syncNotifs();
+};
+// khi mở bằng trình duyệt: nhắc ngay trong app nếu đang mở
+function checkDue(){
+  if(isNative())return;
+  const now=new Date(),from=new Date(now.getTime()-90000);
+  S.rem.forEach(r=>{
+    if(!r.on)return;
+    occurrences(r,from,now,5).forEach(dt=>{
+      const k=r.n+'@'+dt.getTime();
+      if(S.fired[k])return;
+      S.fired[k]=1;
+      const keys=Object.keys(S.fired);if(keys.length>200)keys.slice(0,100).forEach(x=>delete S.fired[x]);
+      save();
+      toast('⏰ '+r.title+(r.note?' - '+r.note:''),'alert',9000);
+      safe(()=>navigator.vibrate&&navigator.vibrate([200,100,200]));
+      confetti(innerWidth/2,innerHeight/3,60);
+      if(curTab==='remind')renderRem();
+    });
+  });
 }
 
 // ===== HỘP THƯ =====
@@ -749,13 +1125,14 @@ $('mineList').onclick=e=>{const b=e.target.closest('.del');if(!b)return;S.mine.s
 let wipeArmed=false;
 $('wipe').onclick=()=>{
   if(!wipeArmed){wipeArmed=true;$('wipe').textContent='Bấm lần nữa để xóa hết';$('wipeMsg').textContent='Thao tác này không thể hoàn tác.';setTimeout(()=>{wipeArmed=false;$('wipe').textContent='Xóa toàn bộ dữ liệu';$('wipeMsg').textContent=''},5000);return}
-  safe(()=>localStorage.removeItem(KEY));S=DEF();ensureDay();wipeArmed=false;$('wipe').textContent='Xóa toàn bộ dữ liệu';$('wipeMsg').textContent='Đã xóa. Dữ liệu mới đã được tạo.';renderToday();
+  safe(()=>localStorage.removeItem(KEY));S=DEF();ensureDay();wipeArmed=false;$('wipe').textContent='Xóa toàn bộ dữ liệu';$('wipeMsg').textContent='Đã xóa. Dữ liệu mới đã được tạo.';renderToday();renderRem();scheduleNotifs(false);
 };
 
 // ===== khởi động =====
 renderToday();
 showTab('today');
-if(isNative()&&S.set.notif)scheduleNotifs(false);
+if(isNative())scheduleNotifs(false);
+setInterval(checkDue,15000);checkDue();
 if(!isNative()&&'serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
